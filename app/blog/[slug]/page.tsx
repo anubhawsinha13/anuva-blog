@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { getAllPosts, getPost } from "@/lib/posts";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import TokenizerDemo from "@/components/simulations/TokenizerDemo";
+import ContextWindowDemo from "@/components/simulations/ContextWindowDemo";
 
 export async function generateStaticParams() {
   return getAllPosts().map((p) => ({ slug: p.slug }));
@@ -21,6 +22,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 const components = {
   TokenizerDemo,
+  ContextWindowDemo,
 };
 
 export default async function PostPage({ params }: { params: Promise<{ slug: string }> }) {
