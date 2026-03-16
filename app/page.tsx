@@ -1,65 +1,101 @@
-import Image from "next/image";
+import Link from "next/link";
+import { getRecentPosts, getAllPosts } from "@/lib/posts";
+import PostCard from "@/components/blog/PostCard";
+
+const PROJECTS = [
+  {
+    name: "AI Blog Workflow",
+    description: "Slack-powered pipeline: prompt → Perplexity research → Claude writing → WordPress publish.",
+    tags: ["AI", "Python", "Slack"],
+    github: "https://github.com/anubhawsinha/blog_post_workflow",
+  },
+  {
+    name: "Financial Agent",
+    description: "Agentic system for financial data analysis and reporting using LLM tool calls.",
+    tags: ["AI Agents", "Python"],
+    github: "https://github.com/anubhawsinha/financial_agent",
+  },
+];
+
+const TOPICS = ["AI Agents", "LLMs", "Context Windows", "Tokenization", "RAG", "Engineering Leadership", "System Design"];
 
 export default function Home() {
+  const posts = getRecentPosts(8);
+  const total = getAllPosts().length;
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <div className="max-w-4xl mx-auto px-6 py-12">
+      <div className="flex flex-col lg:flex-row gap-12">
+
+        {/* Left — Recent Posts */}
+        <section className="flex-1 min-w-0">
+          <h2 className="text-[10px] font-bold uppercase tracking-widest text-[var(--fg-subtle)] mb-4">
+            Recent Posts
+          </h2>
+          <div>
+            {posts.map((post) => (
+              <PostCard key={post.slug} post={post} />
+            ))}
+          </div>
+          {total > 8 && (
+            <Link
+              href="/blog"
+              className="inline-flex items-center gap-1 mt-4 text-sm text-[var(--accent)] hover:underline"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+              View all {total} posts →
+            </Link>
+          )}
+        </section>
+
+        {/* Right — Sidebar */}
+        <aside className="lg:w-72 shrink-0 space-y-8">
+
+          {/* Bio */}
+          <div>
+            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 mb-3" />
+            <p className="text-sm text-[var(--fg-muted)] leading-relaxed">
+              I lead engineering teams building AI-native systems at enterprise scale. I write about LLMs,
+              agents, and the systems underneath them — with live interactive demos you can play with.
+            </p>
+          </div>
+
+          {/* Featured Projects */}
+          <div>
+            <h2 className="text-[10px] font-bold uppercase tracking-widest text-[var(--fg-subtle)] mb-3">
+              Featured Projects
+            </h2>
+            <div className="space-y-3">
+              {PROJECTS.map((p) => (
+                <div key={p.name} className="p-3 rounded-lg border border-[var(--border)] bg-[var(--bg-secondary)]">
+                  <div className="font-medium text-sm text-[var(--fg)]">{p.name}</div>
+                  <p className="text-xs text-[var(--fg-muted)] mt-1 leading-relaxed">{p.description}</p>
+                  <div className="mt-2 flex gap-2 text-xs text-[var(--accent)]">
+                    <a href={p.github} target="_blank" rel="noreferrer" className="hover:underline">GitHub</a>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Topics */}
+          <div>
+            <h2 className="text-[10px] font-bold uppercase tracking-widest text-[var(--fg-subtle)] mb-3">
+              Topics
+            </h2>
+            <div className="flex flex-wrap gap-2">
+              {TOPICS.map((t) => (
+                <span
+                  key={t}
+                  className="px-2.5 py-1 text-[11px] rounded-full border border-[var(--border)] text-[var(--fg-muted)]"
+                >
+                  {t}
+                </span>
+              ))}
+            </div>
+          </div>
+
+        </aside>
+      </div>
     </div>
   );
 }
