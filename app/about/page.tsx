@@ -17,11 +17,6 @@ export default function AboutPage() {
           context windows matter, how attention actually functions — through interactive demos you can
           manipulate yourself, rather than diagrams you just look at.
         </p>
-        <p>
-          The goal is the <a href="https://ciechanow.ski" target="_blank" rel="noreferrer">ciechanow.ski</a> effect
-          for AI: you don&apos;t read about tokenization, you tokenize live text. You don&apos;t read about
-          attention, you click words and watch the arcs shift.
-        </p>
         <h2>What I work on</h2>
         <ul>
           <li>AI-native platform engineering at enterprise scale</li>

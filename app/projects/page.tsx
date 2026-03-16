@@ -20,7 +20,7 @@ const PROJECTS = [
   {
     year: "2025",
     name: "anuva.blog",
-    description: "This site. A Next.js blog with ciechanow.ski-style interactive simulations for AI concepts — live tokenizers, attention visualizers, context window demos.",
+    description: "This site. A Next.js blog with interactive simulations for AI concepts — live tokenizers, attention visualizers, context window demos.",
     tags: ["Next.js", "D3.js", "React", "Interactive"],
     github: "https://github.com/anubhawsinha/anuva-blog",
   },
