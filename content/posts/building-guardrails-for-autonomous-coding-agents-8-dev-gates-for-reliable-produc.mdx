@@ -17,9 +17,22 @@ The mental model that prevents this mistake has three layers. Layer one is verif
 ![Scrabble tiles spelling 'Deepseek' on a wooden table, emphasizing inquiry and exploration.](https://images.pexels.com/photos/30839684/pexels-photo-30839684.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940)
 *Photo by [Markus Winkler](https://www.pexels.com/@markus-winkler-1430818) on [Pexels](https://www.pexels.com)*
 
+## Top Critical Risks — What Goes Wrong Without Guardrails
+
+Before building anything, understand the failure modes you are designing against. These are the six risks that require guardrails before a pilot can run safely.
+
+| Risk | What happens without a guardrail |
+|------|----------------------------------|
+| **Prompt injection** | Malicious content in repo files (comments, READMEs, config) redirects the agent mid-task via `read_file` / `search_code` results |
+| **Test gaming** | Agent deletes or disables tests, or modifies build scripts, so that `verify()` passes on broken code |
+| **Secret leakage** | Credentials in repo files enter LLM context and surface in the agent's output diff |
+| **Uncontrolled blast radius** | No change budget means a single bad task can touch every file in a repository |
+| **No kill switch** | A bad batch of tasks cannot be stopped mid-flight — you have no stop button |
+| **Correlated LLM failure** | Agent and Judge using the same model family share the same blind spots — the judge approves the exact mistakes the agent makes |
+
 ## The Build Order at a Glance
 
-The diagram below shows what to build, in what sequence, and when to introduce the agent. Click any layer to expand the implementation detail.
+The diagram below shows what to build, in what sequence, and when to introduce the agent. Click any phase to expand its tasks and architecture diagram.
 
 <BuildOrderDiagram />
 
@@ -28,6 +41,12 @@ The diagram below shows what to build, in what sequence, and when to introduce t
 Explore what each gate does and which failure modes it prevents. Click a gate or a threat to see the connection.
 
 <GuardrailDemo />
+
+## Defense-in-Depth Architecture
+
+All 8 gates in full detail. Click any gate to expand its specific controls.
+
+<DefenseArchDiagram />
 
 ## Why the Agent Requires Ground Truth First
 
