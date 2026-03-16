@@ -7,7 +7,13 @@ const PROJECTS = [
     name: "AI Blog Workflow",
     description: "Slack-powered pipeline: prompt → Perplexity research → Claude writing → WordPress publish.",
     tags: ["AI", "Python", "Slack"],
-    github: "https://github.com/anubhawsinha/blog_post_workflow",
+    github: "https://github.com/anubhawsinha13/blog_post_workflow",
+  },
+  {
+    name: "Financial Agent",
+    description: "Agentic system for financial data analysis and reporting using LLM tool calls.",
+    tags: ["AI", "Python", "Finance"],
+    github: "https://github.com/anubhawsinha13/financial_agent",
   },
 ];
 
