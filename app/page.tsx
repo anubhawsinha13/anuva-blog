@@ -9,12 +9,6 @@ const PROJECTS = [
     tags: ["AI", "Python", "Slack"],
     github: "https://github.com/anubhawsinha/blog_post_workflow",
   },
-  {
-    name: "Financial Agent",
-    description: "Agentic system for financial data analysis and reporting using LLM tool calls.",
-    tags: ["AI Agents", "Python"],
-    github: "https://github.com/anubhawsinha/financial_agent",
-  },
 ];
 
 const TOPICS = ["AI Agents", "LLMs", "Context Windows", "Tokenization", "RAG", "Engineering Leadership", "System Design"];

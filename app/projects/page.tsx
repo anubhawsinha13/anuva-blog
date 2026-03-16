@@ -12,13 +12,6 @@ const PROJECTS = [
   },
   {
     year: "2025",
-    name: "Financial Agent",
-    description: "Agentic system for financial data analysis using LLM tool calls. The agent can research companies, pull data, and generate structured reports autonomously.",
-    tags: ["AI Agents", "Python", "LLMs"],
-    github: "https://github.com/anubhawsinha/financial_agent",
-  },
-  {
-    year: "2025",
     name: "anuva.blog",
     description: "This site. A Next.js blog with interactive simulations for AI concepts — live tokenizers, attention visualizers, context window demos.",
     tags: ["Next.js", "D3.js", "React", "Interactive"],
