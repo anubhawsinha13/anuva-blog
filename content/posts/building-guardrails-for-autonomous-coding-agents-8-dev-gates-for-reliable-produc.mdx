@@ -17,6 +17,17 @@ The mental model that prevents this mistake has three layers. Layer one is verif
 ![Scrabble tiles spelling 'Deepseek' on a wooden table, emphasizing inquiry and exploration.](https://images.pexels.com/photos/30839684/pexels-photo-30839684.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940)
 *Photo by [Markus Winkler](https://www.pexels.com/@markus-winkler-1430818) on [Pexels](https://www.pexels.com)*
 
+## The Build Order at a Glance
+
+The diagram below shows what to build, in what sequence, and when to introduce the agent. Click any layer to expand the implementation detail.
+
+<BuildOrderDiagram />
+
+## The 8-Gate Foundation Stack
+
+Explore what each gate does and which failure modes it prevents. Click a gate or a threat to see the connection.
+
+<GuardrailDemo />
 
 ## Why the Agent Requires Ground Truth First
 
@@ -200,4 +211,56 @@ The most common failure mode after building the foundation is expanding scope to
 
 Resist this temptation. Expand one dimension at a time. Add repositories while keeping the task type constant. Observe how the verification foundation performs under increased load. Validate that the control plane can manage agent operations across ten repositories before attempting one hundred.
 
-After demonstrating reliability across repositories, expand task types. Move from dependency updates to documentation improvements. These changes have lower production impact than code modifications but exercise different verification paths. Documentation does not have tests to run
+After demonstrating reliability across repositories, expand task types. Move from dependency updates to documentation improvements. These changes have lower production impact than code modifications but exercise different verification paths. Documentation does not have tests to run, but it exercises read and edit tooling in real conditions. Use it as a low-risk expansion step before enabling code refactoring tasks.
+
+The pattern is deliberate scope expansion: prove one dimension, stabilize, then grow. Teams that follow this pattern reach scale reliably. Teams that skip it reach scale and then spend months adding guardrails retroactively, under pressure, with production systems in flight.
+
+## Your Pre-Flight Checklist
+
+Every item below should be checked before the first automated agent session. These are not optional enhancements — they are the gates that cannot be safely retrofitted once the agent is operating on real repositories.
+
+Use this as your sign-off checklist before enabling autonomous runs.
+
+### Layer 1 — Verification Foundation
+
+- Build verifier implemented and tested against at least 3 representative repositories
+- Test runner verifier confirms test count before and after; tracks coverage baseline
+- Lint verifier runs on new violations only (not full codebase — that surfaces unrelated noise)
+- All three exposed as a single `verify()` MCP tool the agent can call
+- `verify()` returns a structured pass/fail with the specific failure reason, not just an exit code
+- Verifier tested independently without an agent — you know it returns reliable results
+
+### Layer 2 — Discipline Controls
+
+- `edit_file` tool has a hard-coded deny list: `.env*`, `*.pem`, `.git/hooks/*`, CI/CD config files
+- Change budget set at 5 files maximum for initial sessions (configured, not just documented)
+- `read_file` content sanitizer active — secrets and credentials are masked before entering LLM context
+- Diff validator runs on every proposed change set: secret scan, test count delta, prohibited patterns
+- Prohibited patterns configured: `@Ignore`, `@Disabled`, `.skip()`, `eslint-disable`, build config keys
+- LLM Judge configured and uses a **different model family** from the coding agent
+- Judge returns a structured JSON verdict with confidence score (0–100)
+- Judge confidence below 70 routes to human review queue, not automatic merge
+
+### Layer 3 — Control Plane
+
+- Global kill switch exists and can halt all active sessions in under 60 seconds
+- Per-domain scoped pause available for surgical intervention without stopping everything
+- Circuit breaker configured: auto-pause a domain when judge veto rate exceeds threshold
+- Failed or incomplete sessions go to a dead-letter queue with human notification
+- MR rate limiter active: no more than 5 MRs per repository per hour
+- Audit log threading session IDs through all systems — task, tool calls, LLM I/O, judge verdict, merge result
+- Audit log is immutable and write-only from the agent's perspective
+
+### Pilot Readiness
+
+- One repository selected for the pilot: highest test coverage, most predictable build
+- One task type selected: dependency version updates or equivalent bounded operation
+- Change budget confirmed at 5 files maximum for the first 20 sessions
+- Kill switch tested end-to-end in staging before the pilot begins
+- First 10 sessions: manually reviewed by a human before any MR is approved
+- Success metrics defined and agreed: MR merge rate, judge veto rate, human override rate, build failure rate
+- Rollback procedure documented: what happens if you need to revert 10 MRs at once
+
+---
+
+The checklist is not a compliance exercise. It is a forcing function. If any item is unchecked, you have identified the exact place where your agent will produce its first uncontrollable incident. Fill the gaps before the first run, not after the first incident.

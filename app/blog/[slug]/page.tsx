@@ -5,6 +5,8 @@ import { getAllPosts, getPost } from "@/lib/posts";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import TokenizerDemo from "@/components/simulations/TokenizerDemo";
 import ContextWindowDemo from "@/components/simulations/ContextWindowDemo";
+import GuardrailDemo from "@/components/simulations/GuardrailDemo";
+import BuildOrderDiagram from "@/components/simulations/BuildOrderDiagram";
 
 export async function generateStaticParams() {
   return getAllPosts().map((p) => ({ slug: p.slug }));
@@ -23,6 +25,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 const components = {
   TokenizerDemo,
   ContextWindowDemo,
+  GuardrailDemo,
+  BuildOrderDiagram,
 };
 
 export default async function PostPage({ params }: { params: Promise<{ slug: string }> }) {
