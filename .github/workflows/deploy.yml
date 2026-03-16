@@ -33,7 +33,7 @@ jobs:
           username: ${{ secrets.SITEGROUND_FTP_USERNAME }}
           password: ${{ secrets.SITEGROUND_FTP_PASSWORD }}
           local-dir: ./out/
-          server-dir: public_html/
+          server-dir: anuva.blog/public_html/
           protocol: ftps
           port: 21
           dangerous-clean-slate: true
