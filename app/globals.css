@@ -76,6 +76,12 @@ body {
 .prose strong { font-weight: 600; }
 .prose hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
 
+/* Table styles */
+.prose table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem; }
+.prose thead th { background: var(--bg-secondary); text-align: left; font-weight: 600; padding: 0.6rem 0.9rem; border: 1px solid var(--border); color: var(--fg); }
+.prose tbody td { padding: 0.55rem 0.9rem; border: 1px solid var(--border); color: var(--fg); vertical-align: top; }
+.prose tbody tr:nth-child(even) { background: var(--bg-secondary); }
+
 /* Simulation block — embedded in prose */
 .sim-block {
   border: 1px solid var(--border);

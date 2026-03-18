@@ -3,6 +3,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getAllPosts, getPost } from "@/lib/posts";
 import { MDXRemote } from "next-mdx-remote/rsc";
+import remarkGfm from "remark-gfm";
+import rehypeHighlight from "rehype-highlight";
+import rehypeSlug from "rehype-slug";
 import TokenizerDemo from "@/components/simulations/TokenizerDemo";
 import ContextWindowDemo from "@/components/simulations/ContextWindowDemo";
 import GuardrailDemo from "@/components/simulations/GuardrailDemo";
@@ -71,7 +74,16 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
       </header>
 
       <div className="prose">
-        <MDXRemote source={post.content} components={components} />
+        <MDXRemote
+          source={post.content}
+          components={components}
+          options={{
+            mdxOptions: {
+              remarkPlugins: [remarkGfm],
+              rehypePlugins: [rehypeHighlight, rehypeSlug],
+            },
+          }}
+        />
       </div>
     </div>
   );
