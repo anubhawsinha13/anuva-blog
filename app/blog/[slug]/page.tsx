@@ -12,6 +12,7 @@ import GuardrailDemo from "@/components/simulations/GuardrailDemo";
 import BuildOrderDiagram from "@/components/simulations/BuildOrderDiagram";
 import DefenseArchDiagram from "@/components/simulations/DefenseArchDiagram";
 import DeveloperDesktopDemo from "@/components/simulations/DeveloperDesktopDemo";
+import StageProgressionDemo from "@/components/simulations/StageProgressionDemo";
 
 export async function generateStaticParams() {
   return getAllPosts().map((p) => ({ slug: p.slug }));
@@ -34,6 +35,7 @@ const components = {
   BuildOrderDiagram,
   DefenseArchDiagram,
   DeveloperDesktopDemo,
+  StageProgressionDemo,
 };
 
 export default async function PostPage({ params }: { params: Promise<{ slug: string }> }) {
