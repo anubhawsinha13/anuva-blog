@@ -11,6 +11,7 @@ import ContextWindowDemo from "@/components/simulations/ContextWindowDemo";
 import GuardrailDemo from "@/components/simulations/GuardrailDemo";
 import BuildOrderDiagram from "@/components/simulations/BuildOrderDiagram";
 import DefenseArchDiagram from "@/components/simulations/DefenseArchDiagram";
+import DeveloperDesktopDemo from "@/components/simulations/DeveloperDesktopDemo";
 
 export async function generateStaticParams() {
   return getAllPosts().map((p) => ({ slug: p.slug }));
@@ -32,6 +33,7 @@ const components = {
   GuardrailDemo,
   BuildOrderDiagram,
   DefenseArchDiagram,
+  DeveloperDesktopDemo,
 };
 
 export default async function PostPage({ params }: { params: Promise<{ slug: string }> }) {
