@@ -1,0 +1,49 @@
+name: Build & Deploy Orion Edge
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "orionedge/**"
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: orionedge/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: orionedge
+
+      - name: Build static site
+        run: npm run build
+        working-directory: orionedge
+        env:
+          NODE_ENV: production
+
+      - name: Deploy to SiteGround via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: gtxm1048.siteground.biz
+          username: orioedge_deploy@orionedge.org
+          password: ${{ secrets.ORIONEDGE_FTP_PASSWORD }}
+          local-dir: ./orionedge/out/
+          server-dir: orionedge.org/public_html/
+          protocol: ftps
+          port: 21
+          dangerous-clean-slate: true
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
