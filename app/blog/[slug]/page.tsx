@@ -17,6 +17,13 @@ import TemperatureDemo from "@/components/simulations/TemperatureDemo";
 import PromptSensitivityDemo from "@/components/simulations/PromptSensitivityDemo";
 import FewShotDemo from "@/components/simulations/FewShotDemo";
 import HallucinationDemo from "@/components/simulations/HallucinationDemo";
+import SystemPromptDemo from "@/components/simulations/SystemPromptDemo";
+import ChainOfThoughtDemo from "@/components/simulations/ChainOfThoughtDemo";
+import RAGDemo from "@/components/simulations/RAGDemo";
+import TokensDemo from "@/components/simulations/TokensDemo";
+import PromptInjectionDemo from "@/components/simulations/PromptInjectionDemo";
+import LLMJudgeDemo from "@/components/simulations/LLMJudgeDemo";
+import StructuredOutputDemo from "@/components/simulations/StructuredOutputDemo";
 
 export async function generateStaticParams() {
   return getAllPosts().map((p) => ({ slug: p.slug }));
@@ -44,6 +51,13 @@ const components = {
   PromptSensitivityDemo,
   FewShotDemo,
   HallucinationDemo,
+  SystemPromptDemo,
+  ChainOfThoughtDemo,
+  RAGDemo,
+  TokensDemo,
+  PromptInjectionDemo,
+  LLMJudgeDemo,
+  StructuredOutputDemo,
 };
 
 export default async function PostPage({ params }: { params: Promise<{ slug: string }> }) {

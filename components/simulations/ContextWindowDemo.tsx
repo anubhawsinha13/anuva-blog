@@ -2,226 +2,174 @@
 
 import { useState, useCallback } from "react";
 
-const MAX_TOKENS = 8192;
-
-const SYSTEM_TOKENS = 320;
-
-const SAMPLE_EXCHANGES = [
-  { role: "user",      text: "What is an LLM?",                                          tokens: 8  },
-  { role: "assistant", text: "An LLM is a large language model trained on text data.",   tokens: 18 },
-  { role: "user",      text: "How does it generate text?",                               tokens: 8  },
-  { role: "assistant", text: "It predicts the next token based on all previous tokens.", tokens: 14 },
-  { role: "user",      text: "What is a context window?",                                tokens: 8  },
-  { role: "assistant", text: "It's the total number of tokens the model can see at once.", tokens: 16 },
-  { role: "user",      text: "Can the model remember past conversations?",               tokens: 10 },
-  { role: "assistant", text: "No — each new session starts fresh with no memory.",       tokens: 15 },
-  { role: "user",      text: "How do I give it memory?",                                 tokens: 9  },
-  { role: "assistant", text: "You include past messages in the context, or use RAG.",    tokens: 16 },
-  { role: "user",      text: "What happens when context fills up?",                      tokens: 9  },
-  { role: "assistant", text: "Oldest messages get dropped — the model forgets them.",    tokens: 14 },
-  { role: "user",      text: "Is there a way to avoid that?",                            tokens: 9  },
-  { role: "assistant", text: "Summarise old turns or use a longer-context model.",       tokens: 14 },
-  { role: "user",      text: "What's the biggest context window available today?",       tokens: 12 },
-  { role: "assistant", text: "Gemini 1.5 supports up to 1 million tokens.",              tokens: 13 },
-  { role: "user",      text: "Does more context always help?",                           tokens: 9  },
-  { role: "assistant", text: "Not always — models can lose focus in very long contexts.", tokens: 15 },
-  { role: "user",      text: "What is 'lost in the middle'?",                            tokens: 9  },
-  { role: "assistant", text: "Models attend poorly to content in the middle of long contexts.", tokens: 16 },
-];
-
-const NEW_MESSAGE_TOKENS = 24;
-
 interface Message {
   id: number;
   role: "user" | "assistant";
   text: string;
   tokens: number;
-  truncated?: boolean;
 }
 
-function TokenBar({ used, max, systemTokens, messages, newMsgTokens }: {
-  used: number;
-  max: number;
-  systemTokens: number;
-  messages: Message[];
-  newMsgTokens: number;
-}) {
-  const pct = (t: number) => Math.min(100, (t / max) * 100);
-  const overflowing = used > max;
+const PRESET_CONVERSATIONS: Message[] = [
+  { id: 1, role: "user", text: "My name is Alex and I'm building a todo app in React.", tokens: 14 },
+  { id: 2, role: "assistant", text: "Great, Alex! A React todo app is a perfect project. What features are you planning?", tokens: 18 },
+  { id: 3, role: "user", text: "I want add, delete, and a filter by status — done, pending, all.", tokens: 15 },
+  { id: 4, role: "assistant", text: "Solid plan. I'd suggest using useState for the list and filter state. Want me to scaffold the component?", tokens: 22 },
+  { id: 5, role: "user", text: "Yes, but use TypeScript with proper interfaces for the Todo type.", tokens: 13 },
+  { id: 6, role: "assistant", text: "Here's a typed TodoItem interface with id, text, and completed fields, plus the main component with filter logic.", tokens: 20 },
+  { id: 7, role: "user", text: "Can you add localStorage persistence so todos survive a page refresh?", tokens: 14 },
+  { id: 8, role: "assistant", text: "I'll add a useEffect that saves to localStorage on change and loads on mount. Here's the updated code with the persistence hook.", tokens: 25 },
+  { id: 9, role: "user", text: "Now add drag-and-drop reordering with react-beautiful-dnd.", tokens: 11 },
+  { id: 10, role: "assistant", text: "I'll wrap the list in DragDropContext with a Droppable container and Draggable items. The onDragEnd callback reorders the array and persists to localStorage.", tokens: 30 },
+  { id: 11, role: "user", text: "Actually, can we switch from localStorage to a Supabase backend with real-time sync?", tokens: 16 },
+  { id: 12, role: "assistant", text: "Sure — I'll set up a Supabase client, create a todos table, and use the real-time subscription API for live updates. The local state becomes a cache synced via the Supabase channel.", tokens: 35 },
+  { id: 13, role: "user", text: "Add authentication so each user sees only their own todos.", tokens: 12 },
+  { id: 14, role: "assistant", text: "I'll integrate Supabase Auth with email/password. Row Level Security policies on the todos table will ensure users can only CRUD their own rows. The client passes the auth token automatically.", tokens: 32 },
+  { id: 15, role: "user", text: "Great. Now remind me, what's my name and what framework are we using?", tokens: 15 },
+];
 
-  return (
-    <div className="space-y-2">
-      {/* Bar */}
-      <div className="relative h-8 rounded-lg overflow-hidden bg-[var(--border)] flex">
-        {/* System prompt */}
-        <div
-          className="h-full bg-violet-600 transition-all duration-300 flex items-center justify-center"
-          style={{ width: `${pct(systemTokens)}%` }}
-          title={`System prompt: ${systemTokens} tokens`}
-        />
-        {/* Messages */}
-        {messages.filter(m => !m.truncated).map((msg, i) => (
-          <div
-            key={msg.id}
-            className={`h-full transition-all duration-300 ${msg.role === "user" ? "bg-blue-500" : "bg-emerald-500"}`}
-            style={{ width: `${pct(msg.tokens)}%` }}
-            title={`${msg.role}: ${msg.tokens} tokens`}
-          />
-        ))}
-        {/* New message */}
-        {newMsgTokens > 0 && (
-          <div
-            className="h-full bg-amber-400 transition-all duration-300"
-            style={{ width: `${pct(newMsgTokens)}%` }}
-            title={`New message: ${newMsgTokens} tokens`}
-          />
-        )}
-        {/* Overflow indicator */}
-        {overflowing && (
-          <div className="absolute inset-0 border-2 border-rose-500 rounded-lg animate-pulse" />
-        )}
-      </div>
-
-      {/* Token counter */}
-      <div className="flex items-center justify-between text-xs font-mono">
-        <div className="flex gap-3 flex-wrap">
-          <span className="flex items-center gap-1">
-            <span className="w-2.5 h-2.5 rounded-sm bg-violet-600 inline-block" />
-            <span className="text-[var(--fg-muted)]">System ({systemTokens})</span>
-          </span>
-          <span className="flex items-center gap-1">
-            <span className="w-2.5 h-2.5 rounded-sm bg-blue-500 inline-block" />
-            <span className="text-[var(--fg-muted)]">User</span>
-          </span>
-          <span className="flex items-center gap-1">
-            <span className="w-2.5 h-2.5 rounded-sm bg-emerald-500 inline-block" />
-            <span className="text-[var(--fg-muted)]">Assistant</span>
-          </span>
-          <span className="flex items-center gap-1">
-            <span className="w-2.5 h-2.5 rounded-sm bg-amber-400 inline-block" />
-            <span className="text-[var(--fg-muted)]">New message</span>
-          </span>
-        </div>
-        <span className={`font-bold ${overflowing ? "text-rose-500" : used > max * 0.85 ? "text-amber-500" : "text-[var(--fg-muted)]"}`}>
-          {used.toLocaleString()} / {max.toLocaleString()}
-        </span>
-      </div>
-
-      {/* Warning */}
-      {overflowing && (
-        <div className="text-xs text-rose-500 font-medium flex items-center gap-1">
-          ⚠ Context overflow — oldest messages are being truncated
-        </div>
-      )}
-      {!overflowing && used > max * 0.85 && (
-        <div className="text-xs text-amber-500 font-medium flex items-center gap-1">
-          ⚡ Context window is {Math.round((used / max) * 100)}% full
-        </div>
-      )}
-    </div>
-  );
-}
+const CONTEXT_LIMIT = 128;
 
 export default function ContextWindowDemo() {
-  const [messageCount, setMessageCount] = useState(4);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [stepIndex, setStepIndex] = useState(0);
+  const [showOverflow, setShowOverflow] = useState(false);
 
-  const handleSlider = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setMessageCount(Number(e.target.value));
-  }, []);
+  const totalTokens = messages.reduce((s, m) => s + m.tokens, 0);
+  const fillPct = Math.min((totalTokens / CONTEXT_LIMIT) * 100, 100);
+  const overLimit = totalTokens > CONTEXT_LIMIT;
 
-  // Build visible messages list
-  const allMessages: Message[] = SAMPLE_EXCHANGES.slice(0, messageCount).map((m, i) => ({
-    id: i,
-    role: m.role as "user" | "assistant",
-    text: m.text,
-    tokens: m.tokens,
-  }));
-
-  // Calculate running totals and figure out truncation
-  const historyTokens = allMessages.reduce((s, m) => s + m.tokens, 0);
-  const totalUsed = SYSTEM_TOKENS + historyTokens + NEW_MESSAGE_TOKENS;
-  const overflow = totalUsed - MAX_TOKENS;
-
-  // Mark messages as truncated from oldest if overflow
-  let truncatedTokens = 0;
-  const processedMessages = allMessages.map((m) => {
-    if (overflow > 0 && truncatedTokens < overflow) {
-      truncatedTokens += m.tokens;
-      return { ...m, truncated: true };
+  const visibleMessages = useCallback(() => {
+    if (!overLimit) return messages.map((m) => ({ ...m, faded: false }));
+    let budget = CONTEXT_LIMIT;
+    const result: (Message & { faded: boolean })[] = [];
+    for (let i = messages.length - 1; i >= 0; i--) {
+      budget -= messages[i].tokens;
+      result.unshift({ ...messages[i], faded: budget < 0 });
     }
-    return m;
-  });
+    return result;
+  }, [messages, overLimit]);
 
-  const truncatedCount = processedMessages.filter(m => m.truncated).length;
-  const visibleMessages = processedMessages.filter(m => !m.truncated);
-  const usedAfterTruncation = SYSTEM_TOKENS + visibleMessages.reduce((s, m) => s + m.tokens, 0) + NEW_MESSAGE_TOKENS;
+  const addNext = () => {
+    if (stepIndex >= PRESET_CONVERSATIONS.length) return;
+    setMessages((prev) => [...prev, PRESET_CONVERSATIONS[stepIndex]]);
+    setStepIndex((i) => i + 1);
+  };
+
+  const fillAll = () => {
+    setMessages(PRESET_CONVERSATIONS);
+    setStepIndex(PRESET_CONVERSATIONS.length);
+  };
+
+  const reset = () => {
+    setMessages([]);
+    setStepIndex(0);
+    setShowOverflow(false);
+  };
+
+  const vis = visibleMessages();
+  const fadedCount = vis.filter((m) => m.faded).length;
 
   return (
-    <div className="sim-block not-prose">
-      <div className="sim-label">Live context window</div>
-
-      {/* Token bar */}
-      <TokenBar
-        used={Math.min(totalUsed, MAX_TOKENS + (overflow > 0 ? 0 : 0))}
-        max={MAX_TOKENS}
-        systemTokens={SYSTEM_TOKENS}
-        messages={processedMessages}
-        newMsgTokens={NEW_MESSAGE_TOKENS}
-      />
-
-      {/* Conversation slider */}
-      <div className="mt-4">
-        <div className="flex items-center justify-between text-xs text-[var(--fg-muted)] mb-1">
-          <span>Conversation length</span>
-          <span className="font-mono">{messageCount} messages</span>
+    <div className="my-8 rounded-xl border border-[var(--border)] bg-[var(--bg-secondary)] overflow-hidden">
+      {/* Token meter */}
+      <div className="px-5 py-4 border-b border-[var(--border)]">
+        <div className="flex items-center justify-between mb-2">
+          <p className="text-xs font-semibold uppercase tracking-widest text-[var(--fg-muted)]">
+            Context Window Usage
+          </p>
+          <p className={`text-xs font-mono font-bold ${overLimit ? "text-red-400" : "text-emerald-400"}`}>
+            {totalTokens} / {CONTEXT_LIMIT} tokens
+          </p>
         </div>
-        <input
-          type="range"
-          min={1}
-          max={SAMPLE_EXCHANGES.length}
-          value={messageCount}
-          onChange={handleSlider}
-          className="w-full accent-[var(--accent)]"
-        />
-        <div className="flex justify-between text-[10px] text-[var(--fg-subtle)] mt-0.5">
-          <span>1 msg</span>
-          <span>{SAMPLE_EXCHANGES.length} msgs</span>
+        <div className="w-full h-5 rounded-full bg-[var(--bg)] border border-[var(--border)] overflow-hidden relative">
+          <div
+            className={`h-full rounded-full transition-all duration-500 ease-out ${
+              fillPct > 90 ? "bg-red-500" : fillPct > 70 ? "bg-amber-500" : "bg-emerald-500"
+            }`}
+            style={{ width: `${Math.min(fillPct, 100)}%` }}
+          />
+          {overLimit && (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <span className="text-[10px] font-bold text-white drop-shadow">OVERFLOW — oldest messages lost</span>
+            </div>
+          )}
         </div>
+        {fadedCount > 0 && (
+          <p className="text-xs text-red-400 mt-2">
+            {fadedCount} message{fadedCount > 1 ? "s" : ""} pushed out of the context window — the model can no longer see {fadedCount > 1 ? "them" : "it"}.
+          </p>
+        )}
       </div>
 
-      {/* Message list */}
-      <div className="mt-4 space-y-1.5 max-h-64 overflow-y-auto">
-        {truncatedCount > 0 && (
-          <div className="text-xs text-rose-500 text-center py-1.5 border border-rose-500/30 rounded bg-rose-500/5 font-medium">
-            ✂ {truncatedCount} message{truncatedCount > 1 ? "s" : ""} truncated — model can no longer see these
-          </div>
+      {/* Chat window */}
+      <div className="px-5 py-4 border-b border-[var(--border)] min-h-[220px] max-h-[380px] overflow-y-auto space-y-3">
+        {vis.length === 0 && (
+          <p className="text-sm text-[var(--fg-muted)] italic text-center py-8">Click "Add Message" to start the conversation...</p>
         )}
-        {processedMessages.map((msg) => (
-          <div
-            key={msg.id}
-            className={`flex gap-2 items-start text-xs rounded-lg px-3 py-2 transition-all duration-300 ${
-              msg.truncated
-                ? "opacity-25 line-through bg-rose-500/5 border border-rose-500/20"
-                : msg.role === "user"
-                ? "bg-blue-500/10 border border-blue-500/20"
-                : "bg-emerald-500/10 border border-emerald-500/20"
-            }`}
-          >
-            <span className={`shrink-0 font-mono font-bold text-[10px] mt-0.5 ${
-              msg.role === "user" ? "text-blue-500" : "text-emerald-500"
+        {vis.map((m) => (
+          <div key={m.id} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"} transition-opacity duration-500 ${m.faded ? "opacity-20" : "opacity-100"}`}>
+            <div className={`max-w-[75%] rounded-lg px-4 py-2.5 text-sm leading-relaxed relative ${
+              m.role === "user"
+                ? "bg-[var(--accent)]/15 text-[var(--fg)] border border-[var(--accent)]/30"
+                : "bg-[var(--bg)] text-[var(--fg)] border border-[var(--border)]"
             }`}>
-              {msg.role === "user" ? "USR" : "AST"}
-            </span>
-            <span className="text-[var(--fg-muted)] flex-1">{msg.text}</span>
-            <span className="shrink-0 font-mono text-[var(--fg-subtle)]">{msg.tokens}t</span>
+              {m.faded && (
+                <div className="absolute -top-2.5 left-2 text-[9px] font-bold uppercase tracking-widest text-red-400 bg-[var(--bg-secondary)] px-1.5 rounded">out of window</div>
+              )}
+              <div className="flex items-center gap-2 mb-1">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-[var(--fg-muted)]">{m.role}</span>
+                <span className="text-[10px] text-[var(--fg-muted)] font-mono">{m.tokens} tok</span>
+              </div>
+              {m.text}
+            </div>
           </div>
         ))}
-        {/* New incoming message */}
-        <div className="flex gap-2 items-start text-xs rounded-lg px-3 py-2 bg-amber-500/10 border border-amber-500/30">
-          <span className="shrink-0 font-mono font-bold text-[10px] mt-0.5 text-amber-500">NEW</span>
-          <span className="text-[var(--fg-muted)] flex-1 italic">How do I prevent context overflow in production?</span>
-          <span className="shrink-0 font-mono text-[var(--fg-subtle)]">{NEW_MESSAGE_TOKENS}t</span>
+      </div>
+
+      {/* Controls */}
+      <div className="px-5 py-4 border-b border-[var(--border)] flex flex-wrap gap-2">
+        <button onClick={addNext} disabled={stepIndex >= PRESET_CONVERSATIONS.length}
+          className="px-4 py-2 rounded-lg border border-[var(--accent)]/50 bg-[var(--accent)]/10 text-[var(--accent)] text-xs font-semibold cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed transition-all hover:bg-[var(--accent)]/20">
+          Add Message ({stepIndex + 1}/{PRESET_CONVERSATIONS.length})
+        </button>
+        <button onClick={fillAll}
+          className="px-4 py-2 rounded-lg border border-amber-500/50 bg-amber-500/10 text-amber-400 text-xs font-semibold cursor-pointer transition-all hover:bg-amber-500/20">
+          Fill Conversation
+        </button>
+        <button onClick={reset}
+          className="px-4 py-2 rounded-lg border border-[var(--border)] text-[var(--fg-muted)] text-xs font-semibold cursor-pointer transition-all hover:bg-[var(--bg)]">
+          Reset
+        </button>
+        {overLimit && (
+          <button onClick={() => setShowOverflow(!showOverflow)}
+            className="px-4 py-2 rounded-lg border border-red-500/50 bg-red-500/10 text-red-400 text-xs font-semibold cursor-pointer transition-all">
+            {showOverflow ? "Hide" : "Show"} Model's Perspective
+          </button>
+        )}
+      </div>
+
+      {/* Model's perspective */}
+      {showOverflow && overLimit && (
+        <div className="px-5 py-4 border-b border-[var(--border)] bg-red-500/5">
+          <p className="text-xs font-semibold uppercase tracking-widest text-red-400 mb-2">What the model actually sees</p>
+          <div className="rounded-lg border border-red-500/30 bg-[var(--bg)] p-4 space-y-2">
+            {vis.filter((m) => !m.faded).map((m) => (
+              <div key={m.id} className="text-xs font-mono text-[var(--fg)]">
+                <span className="text-[var(--fg-muted)]">[{m.role}]</span> {m.text}
+              </div>
+            ))}
+            <div className="pt-2 border-t border-red-500/20 text-xs text-red-400">
+              The model has no memory of the first {fadedCount} messages. If asked "what's my name?" — it can't answer because that message is gone.
+            </div>
+          </div>
         </div>
+      )}
+
+      <div className="px-5 py-4 bg-[var(--bg)]">
+        <p className="text-xs text-[var(--fg-muted)] leading-relaxed">
+          <span className="font-semibold text-[var(--fg)]">LLMs have no memory — only context.</span>{" "}
+          Every "conversation" is actually re-sent from scratch on each turn. When the conversation exceeds the context window (here simplified to {CONTEXT_LIMIT} tokens), oldest messages are truncated. The model doesn't "forget" — those messages were never sent. This is why long conversations degrade: early instructions, names, and constraints silently vanish as new messages push them out.
+        </p>
       </div>
     </div>
   );
