@@ -14,6 +14,9 @@ import DefenseArchDiagram from "@/components/simulations/DefenseArchDiagram";
 import DeveloperDesktopDemo from "@/components/simulations/DeveloperDesktopDemo";
 import StageProgressionDemo from "@/components/simulations/StageProgressionDemo";
 import TemperatureDemo from "@/components/simulations/TemperatureDemo";
+import PromptSensitivityDemo from "@/components/simulations/PromptSensitivityDemo";
+import FewShotDemo from "@/components/simulations/FewShotDemo";
+import HallucinationDemo from "@/components/simulations/HallucinationDemo";
 
 export async function generateStaticParams() {
   return getAllPosts().map((p) => ({ slug: p.slug }));
@@ -38,6 +41,9 @@ const components = {
   DeveloperDesktopDemo,
   StageProgressionDemo,
   TemperatureDemo,
+  PromptSensitivityDemo,
+  FewShotDemo,
+  HallucinationDemo,
 };
 
 export default async function PostPage({ params }: { params: Promise<{ slug: string }> }) {
