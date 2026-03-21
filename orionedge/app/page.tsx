@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Orion Edge — AI Strategy Consulting",
+  title: "Aegis Labs — AI Strategy Consulting",
   description: "AI strategy consulting for enterprises and small businesses. We help you navigate AI adoption, build intelligent systems, and create lasting competitive advantage.",
 };
 
@@ -70,7 +70,7 @@ export default function HomePage() {
           <span style={{ color: "var(--accent)" }}>business advantage</span>
         </h1>
         <p className="text-lg text-[var(--fg-muted)] max-w-2xl mx-auto mb-10">
-          Orion Edge helps enterprises and small businesses design and execute AI strategies that
+          Aegis Labs helps enterprises and small businesses design and execute AI strategies that
           deliver real results — not just experiments.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -159,9 +159,9 @@ export default function HomePage() {
         <div className="max-w-2xl mx-auto text-center">
           <h2 className="text-2xl sm:text-3xl font-bold text-[var(--fg)] mb-6">About Orion Edge</h2>
           <p className="text-[var(--fg-muted)] leading-relaxed mb-5">
-            Orion Edge is a specialized AI strategy consultancy helping organizations at every scale
-            cut through the noise and implement AI that actually works. We bring hands-on experience
-            in enterprise AI systems, LLM integration, and technology leadership — not just theory.
+          Aegis Labs is a specialized AI strategy consultancy helping organizations at every scale
+          cut through the noise and implement AI that actually works. We bring hands-on experience
+          in enterprise AI systems, LLM integration, and technology leadership — not just theory.
           </p>
           <p className="text-[var(--fg-muted)] leading-relaxed">
             Whether you're a Fortune 500 navigating a company-wide AI transformation or a small

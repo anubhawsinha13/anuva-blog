@@ -13,9 +13,9 @@ export default function PrivacyPage() {
         <section className="mb-8">
           <h2 className="text-base font-semibold text-[var(--fg)] mb-3">Overview</h2>
           <p>
-            Orion Edge ("we", "us") operates the website at orionedge.org. This page explains what
-            data is collected when you visit our site and how it is handled. We take your privacy
-            seriously and collect as little data as possible.
+  Aegis Labs ("we", "us") operates the website at aegis-labs.pro. This page explains what
+          data is collected when you visit our site and how it is handled. We take your privacy
+          seriously and collect as little data as possible.
           </p>
         </section>
 
@@ -87,6 +87,7 @@ export default function PrivacyPage() {
             <a href="mailto:orion.edge.here@gmail.com" style={{ color: "var(--accent)" }}>
               orion.edge.here@gmail.com
             </a>
+            .
             .
           </p>
         </section>

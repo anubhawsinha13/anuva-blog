@@ -1,23 +1,17 @@
 import type { Metadata } from "next";
+import projectsData from "@/content/projects.json";
 
 export const metadata: Metadata = { title: "Projects" };
 
-const PROJECTS = [
-  {
-    year: "2025",
-    name: "AI Blog Workflow",
-    description: "Slack-powered content pipeline: slash command → Perplexity research → Claude writing → image injection → GitHub Actions → WordPress publish. Fully automated blog post generation from Slack.",
-    tags: ["AI", "Python", "Slack", "GitHub Actions"],
-    github: "https://github.com/anubhawsinha/blog_post_workflow",
-  },
-  {
-    year: "2025",
-    name: "anuva.blog",
-    description: "This site. A Next.js blog with interactive simulations for AI concepts — live tokenizers, attention visualizers, context window demos.",
-    tags: ["Next.js", "D3.js", "React", "Interactive"],
-    github: "https://github.com/anubhawsinha/anuva-blog",
-  },
-];
+interface Project {
+  name: string;
+  description: string;
+  year: string;
+  tags: string[];
+  github: string;
+}
+
+const PROJECTS: Project[] = projectsData;
 
 export default function ProjectsPage() {
   return (

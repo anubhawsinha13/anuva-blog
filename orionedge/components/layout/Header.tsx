@@ -9,7 +9,7 @@ export default function Header() {
     <header className="border-b border-[var(--border)] sticky top-0 z-50" style={{ background: "var(--bg)" }}>
       <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
         <a href="/" className="flex items-center gap-2 text-[var(--fg)] no-underline">
-          <span className="text-lg font-bold tracking-tight">Orion Edge</span>
+          <span className="text-lg font-bold tracking-tight">Aegis Labs</span>
         </a>
 
         {/* Desktop nav */}

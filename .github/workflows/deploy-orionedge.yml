@@ -1,4 +1,4 @@
-name: Build & Deploy Orion Edge
+name: Build & Deploy Aegis Labs
 
 on:
   push:
@@ -35,11 +35,11 @@ jobs:
       - name: Deploy to SiteGround via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          server: gtxm1048.siteground.biz
-          username: orioedge_deploy@orionedge.org
-          password: ${{ secrets.ORIONEDGE_FTP_PASSWORD }}
+          server: gtxm1123.siteground.biz
+          username: deploy@aegis-labs.pro
+          password: ${{ secrets.AEGIS_FTP_PASSWORD }}
           local-dir: ./orionedge/out/
-          server-dir: orionedge.org/public_html/
+          server-dir: public_html/
           protocol: ftps
           port: 21
           dangerous-clean-slate: true

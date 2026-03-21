@@ -4,11 +4,11 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
-  title: { default: "Orion Edge", template: "%s · Orion Edge" },
+  title: { default: "Aegis Labs", template: "%s · Aegis Labs" },
   description: "AI strategy consulting for enterprises and small businesses.",
-  metadataBase: new URL("https://orionedge.org"),
+  metadataBase: new URL("https://aegis-labs.pro"),
   openGraph: {
-    siteName: "Orion Edge",
+    siteName: "Aegis Labs",
     type: "website",
   },
 };
