@@ -6,14 +6,6 @@ export default function Footer() {
         <div className="flex flex-wrap justify-center gap-5">
           <a href="mailto:orion.edge.here@gmail.com" className="hover:text-[var(--fg)] transition-colors">Contact</a>
           <a href="/privacy/" className="hover:text-[var(--fg)] transition-colors">Privacy</a>
-          <a
-            href="https://anuva.blog/"
-            target="_blank"
-            rel="noreferrer"
-            className="hover:text-[var(--fg)] transition-colors"
-          >
-            anuva.blog
-          </a>
           <a href="/pay/" className="hover:text-[var(--fg)] transition-colors">
             Pay
           </a>
