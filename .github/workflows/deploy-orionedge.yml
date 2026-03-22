@@ -32,6 +32,9 @@ jobs:
         working-directory: orionedge
         env:
           NODE_ENV: production
+          # Embedded Stripe on /pay/ — add repo secrets after deploying stripe-checkout-worker (see orionedge/stripe-checkout-worker/README.md)
+          NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ${{ secrets.STRIPE_PUBLISHABLE_KEY }}
+          NEXT_PUBLIC_STRIPE_CHECKOUT_API_URL: ${{ secrets.STRIPE_CHECKOUT_API_URL }}
 
       - name: Deploy to SiteGround via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5

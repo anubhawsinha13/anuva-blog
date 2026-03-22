@@ -14,12 +14,7 @@ export default function Footer() {
           >
             anuva.blog
           </a>
-          <a
-            href="https://buy.stripe.com/test_00w7sL348apL1S82yG9MY00"
-            target="_blank"
-            rel="noreferrer"
-            className="hover:text-[var(--fg)] transition-colors"
-          >
+          <a href="/pay/" className="hover:text-[var(--fg)] transition-colors">
             Pay
           </a>
         </div>

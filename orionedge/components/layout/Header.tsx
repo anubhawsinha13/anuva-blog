@@ -19,9 +19,7 @@ export default function Header() {
           <a href="/blog/" className="text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors">Insights</a>
           <a href="#contact" className="text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors">Contact</a>
           <a
-            href="https://buy.stripe.com/test_00w7sL348apL1S82yG9MY00"
-            target="_blank"
-            rel="noreferrer"
+            href="/pay/"
             className="px-4 py-1.5 rounded-md text-white text-sm font-medium transition-opacity hover:opacity-90"
             style={{ background: "var(--accent)" }}
           >
@@ -53,9 +51,7 @@ export default function Header() {
           <a href="/blog/" className="text-[var(--fg-muted)] hover:text-[var(--fg)]" onClick={() => setMenuOpen(false)}>Insights</a>
           <a href="#contact" className="text-[var(--fg-muted)] hover:text-[var(--fg)]" onClick={() => setMenuOpen(false)}>Contact</a>
           <a
-            href="https://buy.stripe.com/test_00w7sL348apL1S82yG9MY00"
-            target="_blank"
-            rel="noreferrer"
+            href="/pay/"
             className="px-4 py-2 rounded-md text-white text-sm font-medium text-center transition-opacity hover:opacity-90"
             style={{ background: "var(--accent)" }}
             onClick={() => setMenuOpen(false)}

@@ -16,6 +16,12 @@ Static Next.js app deployed separately from the main blog.
 cd orionedge && npm install && npm run dev
 ```
 
+## Pay / Stripe (stay on aegis-labs.pro)
+
+- **`/pay/`** uses **Stripe Embedded Checkout** (form appears on your site; no redirect to `buy.stripe.com`).
+- You need a tiny backend to create Checkout Sessions: use **`stripe-checkout-worker/`** (Cloudflare Worker template).
+- Add GitHub repo secrets **`STRIPE_PUBLISHABLE_KEY`** and **`STRIPE_CHECKOUT_API_URL`** so the static build embeds the right keys/endpoint. See `stripe-checkout-worker/README.md`.
+
 ## Deploy
 
 GitHub Actions: **Build & Deploy Aegis Labs** (on changes under `orionedge/`).

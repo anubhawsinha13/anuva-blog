@@ -39,13 +39,21 @@ export default function PrivacyPage() {
         <section className="mb-8">
           <h2 className="text-base font-semibold text-[var(--fg)] mb-3">Payments</h2>
           <p>
-            All payments on this site are processed by{" "}
+            Payments are completed on our{" "}
+            <a href="/pay/" style={{ color: "var(--accent)" }}>
+              Book a consultation
+            </a>{" "}
+            page using{" "}
             <a href="https://stripe.com" target="_blank" rel="noreferrer" style={{ color: "var(--accent)" }}>
               Stripe
             </a>
-            , a third-party payment processor. When you click a payment link, you are directed to
-            Stripe's platform. Aegis Labs never receives, stores, or has access to your credit card
-            number or payment details.
+            &apos;s embedded checkout. The payment form is served by Stripe while you remain on
+            aegis-labs.pro. Aegis Labs never receives, stores, or has access to your full card
+            number or payment credentials.
+          </p>
+          <p className="mt-3">
+            A small server-side service (hosted separately from this website) creates a secure
+            checkout session with Stripe; it does not store your card data.
           </p>
           <p className="mt-3">
             Stripe's handling of your payment data is governed by{" "}

@@ -7,7 +7,6 @@ export const metadata: Metadata = {
   description: "AI strategy consulting for enterprises and small businesses. We help you navigate AI adoption, build intelligent systems, and create lasting competitive advantage.",
 };
 
-const STRIPE_LINK = "https://buy.stripe.com/test_00w7sL348apL1S82yG9MY00";
 const CONTACT_EMAIL = "orion.edge.here@gmail.com";
 
 const services = [
@@ -78,15 +77,13 @@ export default async function HomePage() {
           deliver real results — not just experiments.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <a
-            href={STRIPE_LINK}
-            target="_blank"
-            rel="noreferrer"
-            className="px-8 py-3 rounded-lg text-white font-semibold text-sm transition-opacity hover:opacity-90"
+          <Link
+            href="/pay/"
+            className="px-8 py-3 rounded-lg text-white font-semibold text-sm transition-opacity hover:opacity-90 inline-block text-center"
             style={{ background: "var(--accent)" }}
           >
             Book a Consultation
-          </a>
+          </Link>
           <a
             href="#services"
             className="px-8 py-3 rounded-lg text-sm font-semibold border border-[var(--border)] text-[var(--fg)] hover:border-[var(--accent)] transition-colors"
@@ -185,15 +182,13 @@ export default async function HomePage() {
             Book a consultation session and let's explore what AI can do for your business.
             Payments are processed securely via Stripe.
           </p>
-          <a
-            href={STRIPE_LINK}
-            target="_blank"
-            rel="noreferrer"
+          <Link
+            href="/pay/"
             className="inline-block px-10 py-3.5 rounded-lg text-white font-semibold text-sm transition-opacity hover:opacity-90"
             style={{ background: "var(--accent)" }}
           >
             Book a Consultation
-          </a>
+          </Link>
           <p className="mt-4 text-xs text-[var(--fg-subtle)]">
             Secure payment via Stripe · Funds go directly to Aegis Labs
           </p>
