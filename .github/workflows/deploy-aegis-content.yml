@@ -1,0 +1,58 @@
+# Backup / future "CodeCut-style" Aegis site — manual deploy until you point DNS here.
+# Configure secrets: AEGIS_CONTENT_FTP_PASSWORD, and optionally AEGIS_CONTENT_FTP_* (see README in aegis-content/)
+
+name: Build & Deploy Aegis Content (backup)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "aegis-content/**"
+      - "content/posts/**"
+      - "components/simulations/**"
+      - ".github/workflows/deploy-aegis-content.yml"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: aegis-content/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: aegis-content
+
+      - name: Build static site
+        run: npm run build
+        working-directory: aegis-content
+        env:
+          NODE_ENV: production
+
+      # Uncomment and set secrets when you have a target host for this backup build.
+      # Example uses same SiteGround pattern as orionedge — change server-dir to a staging folder or subdomain.
+      # - name: Deploy via FTP
+      #   uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      #   with:
+      #     server: ${{ secrets.AEGIS_CONTENT_FTP_SERVER }}
+      #     username: ${{ secrets.AEGIS_CONTENT_FTP_USERNAME }}
+      #     password: ${{ secrets.AEGIS_CONTENT_FTP_PASSWORD }}
+      #     local-dir: ./aegis-content/out/
+      #     server-dir: public_html/
+      #     protocol: ftps
+      #     port: 21
+      #     dangerous-clean-slate: true
+
+      - name: Upload build artifact (until FTP configured)
+        uses: actions/upload-artifact@v4
+        with:
+          name: aegis-content-out
+          path: aegis-content/out/
+          retention-days: 14
