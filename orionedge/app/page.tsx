@@ -232,7 +232,7 @@ export default function HomePage() {
       {/* About */}
       <section id="about" className="max-w-5xl mx-auto px-6 py-20">
         <div className="max-w-2xl mx-auto text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold text-[var(--fg)] mb-6">About Orion Edge</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold text-[var(--fg)] mb-6">About Aegis Labs</h2>
           <p className="text-[var(--fg-muted)] leading-relaxed mb-5">
           Aegis Labs is a specialized AI strategy consultancy helping organizations at every scale
           cut through the noise and implement AI that actually works. We bring hands-on experience
@@ -266,7 +266,7 @@ export default function HomePage() {
             Book a Consultation
           </a>
           <p className="mt-4 text-xs text-[var(--fg-subtle)]">
-            Secure payment via Stripe · Funds go directly to Orion Edge
+            Secure payment via Stripe · Funds go directly to Aegis Labs
           </p>
         </div>
       </section>
@@ -325,9 +325,9 @@ export default function HomePage() {
 
       {/* Contact */}
       <section id="contact" className="max-w-5xl mx-auto px-6 py-20 text-center">
-        <h2 className="text-2xl font-bold text-[var(--fg)] mb-4">Get in Touch</h2>
+        <h2 className="text-2xl font-bold text-[var(--fg)] mb-4">Get in touch</h2>
         <p className="text-[var(--fg-muted)] mb-6">
-          Have questions before booking? Reach out directly.
+          Questions before you book? Email us anytime—we typically reply within one business day.
         </p>
         <a
           href={`mailto:${CONTACT_EMAIL}`}

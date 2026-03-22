@@ -44,7 +44,7 @@ export default function PrivacyPage() {
               Stripe
             </a>
             , a third-party payment processor. When you click a payment link, you are directed to
-            Stripe's platform. Orion Edge never receives, stores, or has access to your credit card
+            Stripe's platform. Aegis Labs never receives, stores, or has access to your credit card
             number or payment details.
           </p>
           <p className="mt-3">
