@@ -39,7 +39,7 @@ jobs:
           username: deploy@aegis-labs.pro
           password: ${{ secrets.AEGIS_FTP_PASSWORD }}
           local-dir: ./orionedge/out/
-          server-dir: public_html/
+          server-dir: aegis-labs.pro/public_html/
           protocol: ftps
           port: 21
           dangerous-clean-slate: true
