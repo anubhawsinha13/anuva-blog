@@ -8,6 +8,81 @@ export const metadata: Metadata = {
 const STRIPE_LINK = "https://buy.stripe.com/test_00w7sL348apL1S82yG9MY00";
 const CONTACT_EMAIL = "orion.edge.here@gmail.com";
 
+const posts = [
+  {
+    title: "The Enterprise Developer Desktop in the Age of Agents",
+    description: "The modern enterprise developer desktop is four systems: a skills library, a tier-locked agent runner, a verification loop, and a live platform connection.",
+    tags: ["AI Agents", "Architecture"],
+    slug: "enterprise-developer-desktop-agents-llm-platform",
+  },
+  {
+    title: "From Autocomplete to Autonomous: The Four Stages of AI-Assisted Development",
+    description: "Every stage of AI coding tools shifts more authority to the agent. The third transition changes your safety model. Here's what to build before you cross each one.",
+    tags: ["AI Agents", "Guardrails"],
+    slug: "from-autocomplete-to-autonomous-four-stages-ai-assisted-development",
+  },
+  {
+    title: "Before You Build an Autonomous Coding Agent",
+    description: "Build the verification foundation before writing agent code. Without ground truth for correctness, your coding agent operates blind with no feedback loop.",
+    tags: ["AI Agents", "Guardrails"],
+    slug: "building-guardrails-for-autonomous-coding-agents-8-dev-gates-for-reliable-produc",
+  },
+  {
+    title: "Guardrail Architecture for a Real Autonomous Coding Agent",
+    description: "Gate-by-gate design decisions for a production coding agent: the specific threat model, eleven gaps found, and how they were addressed.",
+    tags: ["Architecture", "Guardrails"],
+    slug: "guardrail-architecture-for-a-real-autonomous-coding-agent-gate-by-gate-design-decisions",
+  },
+  {
+    title: "Temperature Settings in LLMs",
+    description: "Temperature controls output randomness by scaling token probabilities. Low values enforce determinism. High values unlock creativity at the cost of reliability.",
+    tags: ["LLM", "AI Engineering"],
+    slug: "temperature-settings-in-llms-the-hidden-parameter-that-defines-your-ais-personality",
+  },
+  {
+    title: "Few-Shot vs Zero-Shot: How Examples Change Model Behaviour",
+    description: "Add zero examples and the model rambles. Add one and it snaps to format. Add three and the output is nearly deterministic. Examples teach format, not knowledge.",
+    tags: ["Prompt Engineering", "LLM"],
+    slug: "few-shot-vs-zero-shot-how-examples-change-model-behaviour",
+  },
+  {
+    title: "Prompt Injection: The SQL Injection of the LLM Era",
+    description: "Four real prompt injection attacks — instruction override, jailbreaking, indirect injection, and system prompt extraction — and how defended models respond.",
+    tags: ["AI Safety", "Security"],
+    slug: "prompt-injection-the-sql-injection-of-the-llm-era",
+  },
+  {
+    title: "RAG vs Pure LLM: When the Model Needs Your Data",
+    description: "Ask the same question with and without retrieval augmentation. Watch the pure LLM guess while RAG cites your actual documents.",
+    tags: ["RAG", "LLM"],
+    slug: "rag-vs-pure-llm-when-the-model-needs-your-data",
+  },
+  {
+    title: "Hallucination Live: What Happens When LLMs Don't Know",
+    description: "Ask about a well-known topic and every claim is verifiable. Ask about an obscure detail and the model fabricates with the same confidence.",
+    tags: ["AI Safety", "LLM"],
+    slug: "hallucination-live-what-happens-when-llms-dont-know",
+  },
+  {
+    title: "Why Your LLM Forgets Things",
+    description: "LLMs have no persistent memory. Every reply is based entirely on what's inside the context window right now — and when it fills up, the oldest things vanish.",
+    tags: ["LLM", "Context Window"],
+    slug: "why-your-llm-forgets",
+  },
+  {
+    title: "Prompt Sensitivity: Why Wording Changes Everything",
+    description: "The same question asked three different ways produces three different responses — not because the model knows different things, but because phrasing shifts output patterns.",
+    tags: ["Prompt Engineering", "LLM"],
+    slug: "prompt-sensitivity-why-wording-changes-everything",
+  },
+  {
+    title: "How Text Becomes Tokens",
+    description: "LLMs don't see words. They see numbers. A live demo of how your text gets sliced into tokens — and why it changes everything about cost and reasoning.",
+    tags: ["LLM", "Explainer"],
+    slug: "how-text-becomes-tokens",
+  },
+];
+
 const services = [
   {
     icon: "◈",
@@ -193,6 +268,58 @@ export default function HomePage() {
           <p className="mt-4 text-xs text-[var(--fg-subtle)]">
             Secure payment via Stripe · Funds go directly to Orion Edge
           </p>
+        </div>
+      </section>
+
+      {/* Thought Leadership */}
+      <section id="insights" className="max-w-5xl mx-auto px-6 py-20">
+        <div className="text-center mb-14">
+          <h2 className="text-2xl sm:text-3xl font-bold text-[var(--fg)] mb-3">Insights & Research</h2>
+          <p className="text-[var(--fg-muted)] max-w-xl mx-auto">
+            Deep technical writing on AI systems, LLMs, and enterprise engineering — from our founder's research blog.
+          </p>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {posts.map((post) => (
+            <a
+              key={post.slug}
+              href={`https://anuva.blog/blog/${post.slug}/`}
+              target="_blank"
+              rel="noreferrer"
+              className="group p-5 rounded-xl border border-[var(--border)] hover:border-[var(--accent)] transition-colors flex flex-col gap-3"
+              style={{ background: "var(--bg-secondary)" }}
+            >
+              <div className="flex gap-2 flex-wrap">
+                {post.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="text-xs px-2 py-0.5 rounded-full border border-[var(--border)] text-[var(--fg-subtle)]"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+              <h3 className="text-sm font-semibold text-[var(--fg)] leading-snug group-hover:text-[var(--accent)] transition-colors">
+                {post.title}
+              </h3>
+              <p className="text-xs text-[var(--fg-muted)] leading-relaxed flex-1">
+                {post.description}
+              </p>
+              <span className="text-xs font-medium mt-1" style={{ color: "var(--accent)" }}>
+                Read on anuva.blog →
+              </span>
+            </a>
+          ))}
+        </div>
+        <div className="text-center mt-10">
+          <a
+            href="https://anuva.blog/blog/"
+            target="_blank"
+            rel="noreferrer"
+            className="inline-block px-6 py-2.5 rounded-lg text-sm font-medium border border-[var(--border)] text-[var(--fg)] hover:border-[var(--accent)] transition-colors"
+          >
+            View all articles on anuva.blog →
+          </a>
         </div>
       </section>
 

@@ -16,6 +16,7 @@ export default function Header() {
         <nav className="hidden md:flex items-center gap-8 text-sm">
           <a href="#services" className="text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors">Services</a>
           <a href="#about" className="text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors">About</a>
+          <a href="#insights" className="text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors">Insights</a>
           <a href="#contact" className="text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors">Contact</a>
           <a
             href="https://buy.stripe.com/test_00w7sL348apL1S82yG9MY00"
@@ -49,6 +50,7 @@ export default function Header() {
         <div className="md:hidden border-t border-[var(--border)] px-6 py-4 flex flex-col gap-4 text-sm" style={{ background: "var(--bg)" }}>
           <a href="#services" className="text-[var(--fg-muted)] hover:text-[var(--fg)]" onClick={() => setMenuOpen(false)}>Services</a>
           <a href="#about" className="text-[var(--fg-muted)] hover:text-[var(--fg)]" onClick={() => setMenuOpen(false)}>About</a>
+          <a href="#insights" className="text-[var(--fg-muted)] hover:text-[var(--fg)]" onClick={() => setMenuOpen(false)}>Insights</a>
           <a href="#contact" className="text-[var(--fg-muted)] hover:text-[var(--fg)]" onClick={() => setMenuOpen(false)}>Contact</a>
           <a
             href="https://buy.stripe.com/test_00w7sL348apL1S82yG9MY00"
