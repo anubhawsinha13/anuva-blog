@@ -6,10 +6,12 @@ This is the **publication-first** version of Aegis Labs: blog-forward home, read
 
 | Folder | Role |
 |--------|------|
-| **`orionedge/`** | Consulting landing (Stripe `/pay/`, services, corporate hero). **Current `aegis-labs.pro` deploy.** |
+| **`orionedge/`** | Legacy consulting app in this repo (superseded for production by the sibling **`aegis-labs-site`** repo). |
 | **`aegis-content/`** | **Backup / future main** when your domain is ready for a content-first site like CodeCut. |
 
 Same repo: both read **`content/posts`** and symlink **`components/simulations`**.
+
+**Production `aegis-labs.pro`** is maintained in the sibling directory **`aegis-labs-site/`** (separate git repository next to this project). That repo contains its own copies of `content/posts` and `components/simulations`; keep them in sync manually or pick one source of truth.
 
 ## Run locally
 
@@ -38,6 +40,6 @@ Configure FTP secrets when you’re ready (see workflow file). By default this d
 - **Newsletter** — replace mailto button with Buttondown/Beehiiv embed when you set up a list.
 - **`metadataBase`** in `app/layout.tsx` — set to your final domain.
 
-## Consulting site backup
+## Consulting site
 
-The consulting build stays in **`orionedge/`** and remains deployable from **Build & Deploy Aegis Labs**. Swapping which folder FTPs to production is a workflow / SiteGround path change when you’re ready.
+Production **`aegis-labs.pro`** deploys from the sibling repo **`aegis-labs-site/`** (GitHub Actions **Build & Deploy Aegis Labs**). The **`orionedge/`** folder here is a legacy copy only; run or edit it locally if you still need it before deleting it.

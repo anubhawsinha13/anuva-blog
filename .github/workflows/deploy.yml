@@ -1,6 +1,6 @@
 # Root Next app (anuva.blog) → SiteGround folder anuva.blog/public_html/
 # Requires GitHub secrets: SITEGROUND_FTP_SERVER, SITEGROUND_FTP_USERNAME, SITEGROUND_FTP_PASSWORD
-# (Aegis Labs uses a different workflow: deploy-orionedge.yml + AEGIS_FTP_PASSWORD.)
+# (Production aegis-labs.pro is built from the sibling repo `aegis-labs-site` — its own GitHub Actions + AEGIS_FTP_PASSWORD.)
 name: Build & Deploy anuva.blog (SiteGround)
 
 on:
