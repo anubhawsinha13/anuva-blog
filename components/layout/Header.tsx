@@ -2,6 +2,7 @@ import Link from "next/link";
 import ThemeToggle from "./ThemeToggle";
 
 const NAV = [
+  { href: "/profile", label: "Profile" },
   { href: "/blog", label: "Blog" },
   { href: "/projects", label: "Projects" },
   { href: "/about", label: "About" },
@@ -22,7 +23,7 @@ export default function Header() {
             <Link
               key={href}
               href={href}
-              className="px-3 py-1.5 text-sm text-[var(--fg-muted)] hover:text-[var(--fg)] hover:bg-[var(--bg-secondary)] rounded-md transition-colors"
+              className="px-2 sm:px-3 py-1.5 text-sm text-[var(--fg-muted)] hover:text-[var(--fg)] hover:bg-[var(--bg-secondary)] rounded-md transition-colors"
             >
               {label}
             </Link>

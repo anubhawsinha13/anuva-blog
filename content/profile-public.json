@@ -1,0 +1,366 @@
+{
+  "source": "linkedIn_profile/profile.md",
+  "name": "Anubhaw Sinha",
+  "eyebrow": "Director of Engineering, Verizon",
+  "headlineLines": [
+    "One platform",
+    "that sells faster,",
+    "bills accurately,",
+    "and closes clean."
+  ],
+  "disciplines": "Enterprise Platforms · Order-to-Cash · Revenue Assurance · AI-Native",
+  "shortBio": "I own North Star Architecture at Verizon Value — the enterprise middle tier behind seven national brands. Catalog, order-to-cash, supply chain, billing, and financial close on one platform: 9.9 million accounts, 728 million records, promotions in 48 hours, an eight-figure book of work. Same integration job for 20 years. Different adapters.",
+  "about": [
+    "Innovative, results-oriented, data-driven technology leader who turns a fragmented commercial estate into one platform that sells faster, bills accurately, and closes clean.",
+    "As Director of Engineering at Verizon Value, I own North Star Architecture — the OSS/BSS middle tier behind seven national wireless brands. Product catalog, order-to-cash (O2C), supply chain, billing, payments, and the financial close run as one system. I operate with full accountability for the technology portfolio and cost-to-serve, bridging finance, brand, and engineering so sell, promise, ship, bill, and book stay one conversation.",
+    "Speed to revenue: promotion deployment collapsed from five to six weeks to 48 hours, and activation from 38 seconds to 12. One digital catalog is the system of record for 5,000+ offers, 500+ rules, and 300+ promotions, with 1,800+ mappings into fulfill, bill, and campaign.",
+    "Straight-through processing: 9.9 million accounts and 728 million records moved with zero downtime and no forced password resets, retiring 114 batch jobs and 12,000 daily manual corrections and cutting data staleness from 24 hours to under 30 minutes. The platform carries 18.5 million live transactions and 309 million API calls for 10,000+ concurrent users at 99.45% order flow-through, with 250+ APIs orchestrated behind one customer experience across seven commercial channels.",
+    "Revenue assurance: five billing engines collapsed into one Oracle BRM and three tax engines into one. PCI DSS Level 1 with ~9M cards tokenized. A daily order–bill–ledger reconciliation keeps the close audit-ready.",
+    "The operating model: an eight-figure annual book of work with monthly actuals and priced SOWs, a multi-hundred-person matrix organization with component-level ownership across global vendors, offshore, and onshore teams, and a named owner on every service. I pioneered an AI-native operating model — generative and agentic AI across the SDLC — AI-led feature development, automated BRD generation, AI-led code reviews under architectural governance, and defect triage with auto-remediation — under the same PCI/PII bar as the human org.",
+    "The integration job is the one SAP names BTP: TM Forum Open APIs and an enterprise gateway in front of payments, VAS, device OEMs, retail POS, and partner subscriptions — inbound and outbound to SAP ERP, with S/4HANA on the 2027 roadmap. Same job I have done for 20 years on Oracle SOA and APIs. Different adapters.",
+    "I write on AI-native engineering at Engineering Insights (anubhaws.sg-host.com)."
+  ],
+  "work": [
+    {
+      "title": "Sell",
+      "body": "A single digital catalog (Tecnotree DCM, TM Forum APIs) replacing fragmented legacy product systems. Promotions in minutes, not weeks."
+    },
+    {
+      "title": "Promise and ship",
+      "body": "Real-time inventory, 3PL ingest, and SAP ERP for forward logistics and part master so checkout does not oversell."
+    },
+    {
+      "title": "Bill and book",
+      "body": "Oracle billing and multi-channel payments; VAS into billing and GL; general-ledger rules that split service, hardware, and financing; daily recon for audit readiness."
+    },
+    {
+      "title": "Connect",
+      "body": "TM Forum Open APIs and a dual-zone API gateway. Current SAP path: BTP Integration Suite inbound and outbound to 1ERP / wSAP. Same fabric: payment processors, VAS, device OEMs, Cisco, DSI, retail POS, and partner subscriptions."
+    },
+    {
+      "title": "Run the work",
+      "body": "Eight-figure NSA program finance, vendor governance, a blended org staffed against the work, and AI as daily executive operations — with privacy and architecture guards."
+    }
+  ],
+  "roles": [
+    {
+      "title": "Director of Engineering",
+      "company": "Verizon",
+      "dates": "January 2025 – Present",
+      "location": "Miami, Florida",
+      "bullets": [
+        {
+          "label": "North Star Architecture",
+          "body": "OSS/BSS middle tier behind seven national wireless brands. Collapsed 366 services, 600+ SOA, 3,293 tables, and 6M+ lines of code across 29 domains onto one stack; 250+ APIs behind one experience across 7 channels. 18.5M+ live transactions, 309M+ API calls, 10k+ concurrent; 99.45% order flow-through; activation 38s → 12s."
+        },
+        {
+          "label": "Operating model and program economics",
+          "body": "Eight-figure book of work: monthly actuals, priced SOWs, integrator concentration as delivery risk, a named owner per service. Multi-hundred-person matrix org, component-level ownership, vendors, offshore, onshore."
+        },
+        {
+          "label": "Speed to revenue — catalog and journeys",
+          "body": "5,000+ offers, 500+ rules, 300+ promotions; 1,800+ mappings into fulfill, bill, and campaign. TM Forum Open APIs; partner subscriptions and retail POS. Cart-to-order 96% / 99.9% uptime. Promotions 5–6 weeks → 48 hours."
+        },
+        {
+          "label": "Order-to-cash into SAP",
+          "body": "ATP 100–150 ms; 3PL; reservation vs contract quantity. SAP ERP (1ERP/wSAP) as the finance and supply-chain record. BTP Integration Suite inbound/outbound; S/4HANA, MDG, Ariba on the 2027 roadmap (target, not built)."
+        },
+        {
+          "label": "Revenue assurance",
+          "body": "Five billing engines → one Oracle BRM; three tax → one. PCI DSS Level 1; ~9M cards tokenized (incl. ~145K legacy AutoPay remediation). Daily order–bill–ledger recon for an audit-ready close. GL split across service, hardware, and financing."
+        },
+        {
+          "label": "Identity, payments, and DevSecOps",
+          "body": "Live identity cutover 1% → 100% with no forced password resets. Gateway modernization in front of the OSS/BSS; legacy coexistence, no big-bang cut. SAST/DAST with automated remediation in the pipeline."
+        },
+        {
+          "label": "AI-native SDLC and zero-downtime migration",
+          "body": "Generative and agentic AI in the pipeline: AI-led feature development, automated BRD generation, code reviews under architectural governance, defect triage with auto-remediation, under PCI/PII guards. 9.9M accounts / 728M records migrated; 114 batch jobs and 12k daily corrections gone; data 24h → under 30 min; care ~60 workgroups → ~20."
+        }
+      ]
+    },
+    {
+      "title": "Associate Director of Engineering",
+      "company": "Verizon",
+      "dates": "December 2023 – December 2024",
+      "location": "Miami, Florida",
+      "bullets": [
+        {
+          "label": "Delivered 29+ capabilities on the North Star Architecture",
+          "body": "AI Shopping Assistant, universal cart, cross-channel order orchestration, and catalog recommendations across the Value brand portfolio."
+        },
+        {
+          "label": "Multi-brand economics",
+          "body": "clone-and-reskin playbook at 85%+ code reuse; new brand onboarding in 10–14 weeks."
+        },
+        {
+          "label": "API products for channels",
+          "body": "scaled cross-functional access to Jira, logs, code, and docs so developers, QA, and architects operate from the same systems."
+        },
+        {
+          "label": "Standardised defect analysis",
+          "body": "one workflow across tickets, logs, and code; playbooks so QA and developers operate consistently."
+        },
+        {
+          "label": "Agentic operating agenda",
+          "body": "18-month roadmap and order-monitoring architecture targeting 90% MTTD and 75% MTTR reduction for a 68-microservice, 6.4M-line platform."
+        },
+        {
+          "label": "Legacy-to-modern mapping",
+          "body": "reverse engineered order-management flows so migrations did not break sell-and-fulfill."
+        }
+      ]
+    },
+    {
+      "title": "Senior Manager, Software Development",
+      "company": "Verizon",
+      "dates": "September 2022 – December 2023",
+      "location": "Miami, Florida",
+      "bullets": [
+        {
+          "label": "API ecosystem as a product",
+          "body": "strategy, design, and governance of APIs across 68+ microservices for multi-brand telecom operations."
+        },
+        {
+          "label": "Cross-channel integration",
+          "body": "digital, retail, and care coordinated through a central API layer for order orchestration."
+        },
+        {
+          "label": "Team leadership",
+          "body": "API, integration, and platform teams; performance reviews and capability building."
+        },
+        {
+          "label": "Security and compliance",
+          "body": "authentication, authorization, and encryption standards for APIs; telecom and internal governance."
+        },
+        {
+          "label": "Vendor and stakeholder management",
+          "body": "third-party API providers; liaison between engineering and senior business stakeholders."
+        }
+      ]
+    },
+    {
+      "title": "Senior Manager",
+      "company": "TracFone Wireless",
+      "dates": "February 2020 – October 2022 (2 years 9 months)",
+      "location": "Miami/Fort Lauderdale Area",
+      "bullets": [
+        {
+          "label": null,
+          "body": "Led software delivery across sales, retail, retention, and B2B portfolios; ~$5M budget and 60+ resources year-on-year."
+        },
+        {
+          "label": null,
+          "body": "Owned the lifecycle for subscriber-facing and back-office platforms — acquisition, activation, and retention."
+        },
+        {
+          "label": null,
+          "body": "Set goals, timelines, and quality standards; evaluated and implemented platform technologies."
+        },
+        {
+          "label": null,
+          "body": "Improved subscriber acquisition and retention through platform changes; regulatory compliance for telecom operations."
+        }
+      ]
+    },
+    {
+      "title": "Technical Lead",
+      "company": "TracFone Wireless",
+      "dates": "April 2017 – February 2020 (2 years 11 months)",
+      "location": "Miami/Fort Lauderdale Area",
+      "bullets": [
+        {
+          "label": null,
+          "body": "Technical leadership across middleware and APIs; design, development, test, code review, and documentation."
+        },
+        {
+          "label": null,
+          "body": "Functional design and architecture of middleware in collaboration with product owners and project managers."
+        },
+        {
+          "label": null,
+          "body": "Managed and mentored onshore agile teams; sales, retail, retention, and B2B portfolios with ~$5M budget and 60+ resources."
+        }
+      ]
+    },
+    {
+      "title": "Staff Software Engineer",
+      "company": "Vertiv",
+      "dates": "October 2015 – April 2017 (1 year 7 months)",
+      "location": "Sunrise, Florida",
+      "bullets": [
+        {
+          "label": null,
+          "body": "Requirements through customer-site deployment of Oracle SOA/BPM/OSB/ADF and Java integrations."
+        },
+        {
+          "label": null,
+          "body": "Third-party service integration; end-to-end delivery of workflows and services."
+        }
+      ]
+    },
+    {
+      "title": "Lead Software Engineer",
+      "company": "Emerson Network Power",
+      "dates": "February 2013 – April 2017 (4 years 3 months)",
+      "location": "Miami/Fort Lauderdale Area",
+      "bullets": [
+        {
+          "label": null,
+          "body": "Process integration on Oracle SOA, BPM, BPEL, OSB, Java/J2EE — contracts, mappings, events, and security between heterogeneous systems."
+        },
+        {
+          "label": null,
+          "body": "Costed delivery (design and development estimates); reuse of existing services; RFID Gen1/Gen2 framework."
+        },
+        {
+          "label": null,
+          "body": "Led cross-functional teams across time zones; GA release notes and QA certification."
+        }
+      ]
+    },
+    {
+      "title": "Team Lead",
+      "company": "Emerson Network Power",
+      "dates": "November 2010 – February 2013 (2 years 4 months)",
+      "location": null,
+      "bullets": [
+        {
+          "label": null,
+          "body": "Architecture and design with data and application architects; SOA/BPM/BPEL proofs of concept; service patterns."
+        },
+        {
+          "label": null,
+          "body": "Service contracts and security between heterogeneous systems; cross-timezone delivery; QA release cycles."
+        }
+      ]
+    },
+    {
+      "title": "IT Specialist, SOA",
+      "company": "IBM",
+      "dates": "April 2010 – November 2010 (8 months)",
+      "location": null,
+      "bullets": [
+        {
+          "label": null,
+          "body": "Client requirements to service contracts (WSDL/schema); BPEL/OSB proofs of concept; OWSM security."
+        },
+        {
+          "label": null,
+          "body": "Third-party integration and data mapping; production deploy and support."
+        }
+      ]
+    },
+    {
+      "title": "Software Engineer",
+      "company": "Infosys",
+      "dates": "January 2008 – April 2010 (2 years 4 months)",
+      "location": null,
+      "bullets": [
+        {
+          "label": null,
+          "body": "Requirements from SMEs at client site; detailed design; service contracts and schemas; implementation and release notes."
+        }
+      ]
+    },
+    {
+      "title": "Trainee / Developer",
+      "company": "IT-OM Technologies Limited",
+      "dates": "July 2006 – August 2007 (1 year 2 months)",
+      "location": null,
+      "bullets": [
+        {
+          "label": null,
+          "body": "UI and service integration; server deploy and load configuration; bug fixes and product documentation."
+        }
+      ]
+    }
+  ],
+  "pinnedSkills": [
+    "Engineering Leadership",
+    "Enterprise Architecture",
+    "Digital Transformation",
+    "Business Support Systems (BSS)",
+    "Platform Engineering"
+  ],
+  "skills": [
+    "OSS/BSS",
+    "Payment Gateways",
+    "Telecommunications",
+    "PCI DSS",
+    "Order Management",
+    "Identity and Access Management",
+    "Order-to-Cash (O2C)",
+    "API Architecture",
+    "Product Catalog / Product Information Management",
+    "Microservices",
+    "Configure, Price, Quote (CPQ)",
+    "Systems Integration",
+    "Integration Architecture",
+    "Software Architecture",
+    "Partner / Ecosystem Integration",
+    "Solution Architecture",
+    "Supply Chain Integration",
+    "DevSecOps",
+    "SAP ERP Integration",
+    "AI Strategy",
+    "SAP S/4HANA (target architecture)",
+    "Generative AI",
+    "SAP BTP Integration (architecture — not a cert)",
+    "Agentic AI",
+    "Oracle BRM (Billing and Revenue Management)",
+    "Software Development Life Cycle (SDLC)",
+    "Billing Systems",
+    "Technical Leadership",
+    "Revenue Assurance",
+    "Organizational Leadership",
+    "Revenue Recognition / GL Integration",
+    "Portfolio Management",
+    "Financial Reconciliation",
+    "Program Management",
+    "TM Forum Open APIs",
+    "Vendor Management",
+    "Technology Roadmapping",
+    "IT Strategy",
+    "Cross-functional Leadership",
+    "Stakeholder Management",
+    "Legacy Modernization",
+    "Cloud Integration",
+    "Event-Driven Architecture",
+    "Oracle SOA Suite",
+    "Oracle BPM",
+    "Java",
+    "Apigee",
+    "Elasticsearch",
+    "MCP",
+    "LangGraph",
+    "Prompt Engineering"
+  ],
+  "writing": [
+    {
+      "label": "Engineering Insights — AI-Native Engineering Series",
+      "url": "https://anubhaws.sg-host.com"
+    },
+    {
+      "label": "What is AI-Native Software Engineering",
+      "url": "https://anubhaws.sg-host.com/what-is-ai-native-software-engineering/"
+    },
+    {
+      "label": "Architecture of AI-Native Applications",
+      "url": "https://anubhaws.sg-host.com/architecture-of-ai-native-applications/"
+    },
+    {
+      "label": "Why AI Will Change Software Development",
+      "url": "https://anubhaws.sg-host.com/why-ai-will-change-software-development/"
+    },
+    {
+      "label": "Prompt Engineering & Context Engineering",
+      "url": "https://anubhaws.sg-host.com/prompt-engineering-context-engineering-mastering-llm-performance-through-dual-optimization-strategies/"
+    }
+  ],
+  "contact": {
+    "linkedin": "https://www.linkedin.com/in/anubhawsinha/",
+    "blog": "https://anubhaws.sg-host.com",
+    "blogLabel": "Engineering Insights"
+  }
+}
