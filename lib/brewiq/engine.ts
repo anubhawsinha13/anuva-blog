@@ -272,7 +272,7 @@ export function coach(
       delta: grindStep,
       unit: "setting",
       headline: `Go to ${snap(recipe.grindSetting - grindStep, grindStep)} on the ${grinder.brand} ${grinder.name}.`,
-      why: `${taste.primary} is under-extraction. One finer step stays inside ${grind.min}–${grind.max} on this grinder.`,
+      why: `${taste.primary[0].toUpperCase()}${taste.primary.slice(1)} is under-extraction. One finer step stays inside ${grind.min}–${grind.max} on this grinder.`,
       apply: grindDown,
     });
     plans.push({
@@ -314,7 +314,7 @@ export function coach(
       delta: grindStep,
       unit: "setting",
       headline: `Open to ${snap(recipe.grindSetting + grindStep, grindStep)} on the ${grinder.brand} ${grinder.name}.`,
-      why: `${taste.primary} is over-extraction. One coarser step, still inside this grinder's ${recipe.method} range.`,
+      why: `${taste.primary[0].toUpperCase()}${taste.primary.slice(1)} is over-extraction. One coarser step, still inside this grinder's ${recipe.method} range.`,
       apply: grindUp,
     });
     plans.push({

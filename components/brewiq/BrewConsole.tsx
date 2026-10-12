@@ -124,13 +124,6 @@ export function BrewConsole({ model }: { model: BrewIQModel }) {
         />
       </div>
 
-      {brewer.profiling && recipe.profile && (
-        <div style={{ marginTop: 14 }}>
-          <h2>Pressure profile</h2>
-          <PressureProfile recipe={recipe} onChange={(profile) => set({ profile })} />
-        </div>
-      )}
-
       <div className="bq-actions">
         <button
           type="button"
@@ -153,6 +146,13 @@ export function BrewConsole({ model }: { model: BrewIQModel }) {
       <div style={{ marginTop: 16 }}>
         <TastePad model={model} />
       </div>
+
+      {brewer.profiling && recipe.profile && (
+        <div style={{ marginTop: 18 }}>
+          <h2>Pressure profile</h2>
+          <PressureProfile recipe={recipe} onChange={(profile) => set({ profile })} />
+        </div>
+      )}
     </div>
   );
 }

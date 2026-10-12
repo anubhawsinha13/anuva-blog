@@ -48,9 +48,11 @@ export function useBrewIQ() {
   const logs = state.logs;
 
   const grinder = useMemo(() => {
-    const pool = grindersFor(method, state.custom.grinders).filter((g) =>
-      grinders.some((owned) => owned.id === g.id),
+    const owned = grindersFor(method, state.custom.grinders).filter((g) =>
+      grinders.some((item) => item.id === g.id),
     );
+    const catalog = grindersFor(method, state.custom.grinders);
+    const pool = owned.length ? owned : catalog;
     return (
       pool.find((g) => g.id === state.activeGrinderId) ??
       pool[0] ??
@@ -59,9 +61,11 @@ export function useBrewIQ() {
   }, [state, method, grinders]);
 
   const brewer = useMemo(() => {
-    const pool = brewersFor(method, state.custom.brewers).filter((b) =>
-      brewers.some((owned) => owned.id === b.id),
+    const owned = brewersFor(method, state.custom.brewers).filter((b) =>
+      brewers.some((item) => item.id === b.id),
     );
+    const catalog = brewersFor(method, state.custom.brewers);
+    const pool = owned.length ? owned : catalog;
     return (
       pool.find((b) => b.id === state.activeBrewerId) ??
       pool[0] ??
