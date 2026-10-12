@@ -4,6 +4,7 @@ import ThemeToggle from "./ThemeToggle";
 const NAV = [
   { href: "/profile", label: "Profile" },
   { href: "/blog", label: "Blog" },
+  { href: "/brewiq", label: "BrewIQ" },
   { href: "/projects", label: "Projects" },
   { href: "/about", label: "About" },
 ];

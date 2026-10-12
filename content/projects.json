@@ -1,5 +1,13 @@
 [
   {
+    "name": "BrewIQ Full Control",
+    "description": "Coffee command bench on this site: kit-aware recipes, phase timer, bag freshness, and a coach that moves one lever at a time. All client-side.",
+    "year": "2026",
+    "tags": ["Next.js", "TypeScript", "Interactive"],
+    "href": "/brewiq/",
+    "linkLabel": "Open the bench"
+  },
+  {
     "name": "AI Blog Workflow",
     "description": "Slack-powered content pipeline: slash command \u2192 Perplexity research \u2192 Claude writing \u2192 image injection \u2192 GitHub Actions \u2192 WordPress publish. Fully automated blog post generation from Slack.",
     "year": "2025",

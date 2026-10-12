@@ -10,7 +10,8 @@
     "check": "npm run build && node scripts/check.mjs",
     "check:quick": "node scripts/check.mjs",
     "check:external": "node scripts/check.mjs --external",
-    "sync:profile": "node scripts/sync-profile.mjs"
+    "sync:profile": "node scripts/sync-profile.mjs",
+    "test:brewiq": "npx tsx scripts/test-brewiq.ts"
   },
   "dependencies": {
     "@mdx-js/loader": "^3.1.1",

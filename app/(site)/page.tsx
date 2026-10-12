@@ -4,16 +4,25 @@ import PostCard from "@/components/blog/PostCard";
 
 const PROJECTS = [
   {
+    name: "BrewIQ Full Control",
+    description: "Every brew lever on one bench. Brewy changes only one thing next time.",
+    tags: ["Coffee", "Interactive", "TypeScript"],
+    href: "/brewiq/",
+    label: "Open the bench",
+  },
+  {
     name: "AI Blog Workflow",
     description: "Slack-powered pipeline: prompt → Perplexity research → Claude writing → WordPress publish.",
     tags: ["AI", "Python", "Slack"],
-    github: "https://github.com/anubhawsinha13/blog_post_workflow",
+    href: "https://github.com/anubhawsinha13/blog_post_workflow",
+    label: "GitHub",
   },
   {
     name: "Financial Agent",
     description: "Agentic system for financial data analysis and reporting using LLM tool calls.",
     tags: ["AI", "Python", "Finance"],
-    github: "https://github.com/anubhawsinha13/financial_agent",
+    href: "https://github.com/anubhawsinha13/financial_agent",
+    label: "GitHub",
   },
 ];
 
@@ -70,7 +79,11 @@ export default function Home() {
                   <div className="font-medium text-sm text-[var(--fg)]">{p.name}</div>
                   <p className="text-xs text-[var(--fg-muted)] mt-1 leading-relaxed">{p.description}</p>
                   <div className="mt-2 flex gap-2 text-xs text-[var(--accent)]">
-                    <a href={p.github} target="_blank" rel="noreferrer" className="hover:underline">GitHub</a>
+                    {p.href.startsWith("/") ? (
+                      <Link href={p.href} className="hover:underline">{p.label}</Link>
+                    ) : (
+                      <a href={p.href} target="_blank" rel="noreferrer" className="hover:underline">{p.label}</a>
+                    )}
                   </div>
                 </div>
               ))}
