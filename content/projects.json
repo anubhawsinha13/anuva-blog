@@ -1,14 +1,21 @@
 [
   {
+    "name": "BrewIQ Full Control",
+    "description": "Coffee brewing studio: 7 methods, full control of dose, ratio, temp, grind, bloom, pours and timer with live TDS/extraction math, recipe library and tasting log. Live at /brewiq.",
+    "year": "2026",
+    "tags": ["Next.js", "React", "Coffee", "Interactive"],
+    "github": "https://github.com/anubhawsinha13/anuva-blog"
+  },
+  {
     "name": "AI Blog Workflow",
-    "description": "Slack-powered content pipeline: slash command \u2192 Perplexity research \u2192 Claude writing \u2192 image injection \u2192 GitHub Actions \u2192 WordPress publish. Fully automated blog post generation from Slack.",
+    "description": "Slack-powered content pipeline: slash command → Perplexity research → Claude writing → image injection → GitHub Actions → WordPress publish. Fully automated blog post generation from Slack.",
     "year": "2025",
     "tags": ["AI", "Python", "Slack", "GitHub Actions"],
     "github": "https://github.com/anubhawsinha/blog_post_workflow"
   },
   {
     "name": "anuva.blog",
-    "description": "This site. A Next.js blog with interactive simulations for AI concepts \u2014 live tokenizers, attention visualizers, context window demos.",
+    "description": "This site. A Next.js blog with interactive simulations for AI concepts — live tokenizers, attention visualizers, context window demos.",
     "year": "2025",
     "tags": ["Next.js", "D3.js", "React", "Interactive"],
     "github": "https://github.com/anubhawsinha/anuva-blog"

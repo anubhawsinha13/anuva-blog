@@ -25,6 +25,19 @@ export default function Home() {
 
   return (
     <div className="max-w-4xl mx-auto px-6 py-12">
+      {/* BrewIQ banner */}
+      <Link
+        href="/brewiq"
+        className="block mb-10 p-5 rounded-2xl border border-amber-600/30 bg-gradient-to-r from-amber-600/15 via-amber-600/5 to-transparent hover:border-amber-600/60 transition-colors"
+      >
+        <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-amber-600 dark:text-amber-400">
+          New · BrewIQ Full Control
+        </div>
+        <div className="mt-1 font-bold text-[var(--fg)]">Dial in every brew — dose, ratio, grind, timer, recipes →</div>
+        <p className="text-xs text-[var(--fg-muted)] mt-0.5">
+          7 methods · live TDS + extraction math · stage timer · tasting log. No account, saves locally.
+        </p>
+      </Link>
       <div className="flex flex-col lg:flex-row gap-12">
 
         {/* Left — Recent Posts */}
