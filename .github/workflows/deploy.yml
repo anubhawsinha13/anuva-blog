@@ -3,6 +3,13 @@
 # (Production aegis-labs.pro is built from the sibling repo `aegis-labs-site` — its own GitHub Actions + AEGIS_FTP_PASSWORD.)
 name: Build & Deploy anuva.blog (SiteGround)
 
+# The FTP step wipes public_html before upload. Two overlapping runs
+# delete each other's files and leave new post folders without index.html,
+# which SiteGround serves as 403. Queue deploys instead of running them together.
+concurrency:
+  group: deploy-anuva-blog
+  cancel-in-progress: false
+
 on:
   push:
     branches: [main]
