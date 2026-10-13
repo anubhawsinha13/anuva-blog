@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import projectsData from "@/content/projects.json";
 
 export const metadata: Metadata = { title: "Projects" };
@@ -8,7 +9,9 @@ interface Project {
   description: string;
   year: string;
   tags: string[];
-  github: string;
+  github?: string;
+  href?: string;
+  linkLabel?: string;
 }
 
 const PROJECTS: Project[] = projectsData;
@@ -43,7 +46,11 @@ export default function ProjectsPage() {
               </div>
             </div>
             <div className="mt-3 flex gap-3 text-xs text-[var(--accent)]">
-              <a href={p.github} target="_blank" rel="noreferrer" className="hover:underline">GitHub →</a>
+              {p.href ? (
+                <Link href={p.href} className="hover:underline">{p.linkLabel ?? "Open →"}</Link>
+              ) : p.github ? (
+                <a href={p.github} target="_blank" rel="noreferrer" className="hover:underline">GitHub →</a>
+              ) : null}
             </div>
           </div>
         ))}
