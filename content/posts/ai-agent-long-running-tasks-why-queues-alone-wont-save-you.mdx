@@ -1,0 +1,294 @@
+---
+title: "AI Agent Long-Running Tasks: Why Queues Alone Won't Save You"
+date: "2026-10-13"
+description: "Reliable long-running AI agents need three distinct layers: queues to schedule work and replace failed workers, checkpoints to persist incremental progress, and recovery logic that reconciles uncertain external effects before retrying. Teams shipping production agents are learnin"
+tags: ["AI Engineering", "AI Agents"]
+featured: false
+hasSimulation: false
+---
+A senior engineer on an AI automation team recently debugged why their deployment agent had shipped the same container image three times in a row. The root cause wasn't the queue—it was the absence of reconciliation logic. The agent crashed after triggering a deploy but before recording success, the queue dutifully restarted it, and the retry path blindly re-executed the deployment call.
+
+This pattern repeats across production AI systems: document processors that re-send notifications, financial agents that double-charge customers, research assistants that restart multi-hour analysis jobs from scratch. The common thread is treating queue retry as a complete durability solution when it only provides half the story—worker replacement without progress preservation or idempotency guarantees.
+
+![A grid of grey mailboxes with number labels showing an organized system.](https://images.pexels.com/photos/167722/pexels-photo-167722.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940)
+*Photo by [Ann H](https://www.pexels.com/@ann-h-45017) on [Pexels](https://www.pexels.com)*
+
+
+## What "Long-Running" Actually Means for AI Agents
+
+Long-running in this context doesn't just mean "takes more than thirty seconds." It describes tasks that span process lifetimes, dependency timeouts, human approval cycles, or external rate limits. A durable execution must preserve progress across process failure, waiting periods, and human approval; a checkpoint records progress, while a workflow coordinates retries, waits, signals, and history [2].
+
+Agent systems increasingly split work into bounded, checkpointable steps rather than keeping one model invocation alive for the entire task [4]. A research agent might decompose "analyze quarterly earnings for top tech companies" into:
+
+1. Extract company list from index
+2. For each company: fetch 10-K filing
+3. For each filing: extract revenue, operating income, headcount
+4. Aggregate trends across companies
+5. Generate executive summary
+
+Without checkpoints, a crash during step four restarts the entire sequence. With checkpoints, the agent resumes at step four with already-fetched filings and extracted data intact.
+
+## The Queue-Checkpoint-Recovery Stack
+
+Production designs are converging on a layered model: queues handle delivery and worker replacement, checkpoints preserve progress, and workflow engines coordinate retries, waits, signals, and long-lived history [2]. Each layer solves a distinct failure mode.
+
+| Layer | Responsibility | Failure Mode Addressed |
+|-------|---------------|----------------------|
+| Queue | Job delivery, worker replacement | Worker crash, deployment |
+| Checkpoint | Progress persistence, incremental state | Lost work on restart |
+| Recovery logic | Idempotency, reconciliation, retry budgets | Duplicate side effects, infinite retries |
+| Workflow engine (optional) | Long waits, signals, replay, compensation | Multi-day pauses, approvals, complex rollback |
+
+A practical baseline architecture is a queue, replaceable worker, and PostgreSQL-backed checkpointer; run leases, fencing, operation logs, and artifact storage are added as reliability requirements grow [1].
+
+### Queues: Delivery and Restart
+
+Queues provide at-least-once delivery and automatic retries on worker failure. When an agent process crashes, the queue redelivers the job to a healthy worker. This handles transient infrastructure failures—container restarts, node replacements, out-of-memory kills—without manual intervention.
+
+Queue payloads should identify the job, record completed work, and specify the remaining retry allowance so operators can understand and control recovery behavior [3]. A minimal payload includes:
+
+```json
+{
+  "job_id": "research-q4-2024-tech-earnings",
+  "task_type": "earnings_analysis",
+  "checkpoint_version": 3,
+  "retry_count": 2,
+  "max_retries": 5,
+  "deadline_utc": "2024-11-15T23:59:59Z"
+}
+```
+
+The queue alone only restarts execution; production durability depends on idempotent operations, leases, bounded retries, durable state, and human escalation [2].
+
+### Checkpoints: Incremental Progress
+
+Checkpoints should preserve the task position, intermediate results, in-progress subtasks, error and retry history, and resource-consumption data [4]. A durable agent should save at least processed items, intermediate outputs, current task position, and the context required for subsequent decisions [7].
+
+Checkpointing before long waits—such as human approval, CI completion, or rate-limit cooldown—allows the process to terminate and resume without holding a worker continuously [6]. An agent performing a bounded unit of work, writing state to durable storage, exiting, and being reawakened by a scheduler avoids tying up a continuously running process during long waits [5].
+
+LangGraph v0.1 persisted graph state after each node execution, enabling crash recovery from the latest completed node rather than restarting the entire graph [5]. This pattern treats each agent step as a transaction boundary.
+
+Event sourcing records model calls, tool responses, and decisions as an append-only history; periodic state snapshots reduce the cost of replaying that history [6]. Workflow code can replay against recorded history and reuse completed activity results instead of rerunning external activities, reducing duplicate side effects during recovery [10].
+
+### Recovery: Reconciliation Before Retry
+
+Safe recovery requires checking whether an external action already occurred before replaying it; blindly retrying can duplicate side effects such as payments, deployments, or messages [1]. Recovery is shifting from "restart the agent" to "inspect pending operations, reconcile unknown outcomes, then resume from confirmed state" [1].
+
+A typical reconciliation flow:
+
+```python
+def resume_deployment_task(checkpoint):
+    # Check actual deployment state before retrying
+    deployment_status = cloud_api.get_deployment(
+        checkpoint["deployment_id"]
+    )
+    
+    if deployment_status == "running":
+        # Already deployed—skip to next step
+        return checkpoint.advance_to("verify_health")
+    elif deployment_status == "failed":
+        # Confirmed failure—safe to retry
+        checkpoint.record_retry()
+        return trigger_deployment(checkpoint["image_tag"])
+    else:
+        # Unknown state—escalate to human
+        raise ReconciliationError(
+            f"Unclear deployment state: {deployment_status}"
+        )
+```
+
+Stable workflow or thread identifiers are necessary for resumption; creating a new random identifier for every attempt prevents the runtime from locating prior state [10].
+
+![A focused view of a hand drawing with a marker on a paper, capturing creative planning in progress.](https://images.pexels.com/photos/3861462/pexels-photo-3861462.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940)
+*Photo by [ThisIsEngineering](https://www.pexels.com/@thisisengineering) on [Pexels](https://www.pexels.com)*
+
+
+## Retry Policies That Don't Run Forever
+
+A recommended retry policy combines exponential backoff with a finite retry budget, followed by escalation or dead-letter-queue placement when the budget is exhausted [3]. Automatic retries improve resilience to transient failures, but practitioners must verify uncertain external effects first to avoid duplicate mutations [1][3].
+
+More retries can absorb transient dependency failures; bounded retry budgets and dead-letter or human handoff prevent infinite churn, runaway cost, and repeated harmful actions [3].
+
+A production retry policy should specify:
+
+- **Initial delay:** Start with short delays (1-5 seconds) for transient network errors
+- **Backoff multiplier:** Use 2x or 3x to space out retries as failures persist
+- **Maximum delay:** Cap at 5-15 minutes to avoid indefinite waits
+- **Retry budget:** Set hard limits (5-10 attempts) before escalation
+- **Jitter:** Add randomness to prevent thundering herds
+- **Exception types:** Distinguish retriable (timeout, 503) from permanent (401, validation error) failures
+
+Human-in-the-loop pauses are treated as durable workflow states: the agent checkpoints, suspends, receives an approval event, and continues later [10]. This makes multi-day approval flows as reliable as sub-second retries.
+
+## The Workflow Engine Question
+
+The persistent debate in agent reliability is whether a queue plus database checkpoint suffices, or whether teams should adopt a dedicated workflow engine like Temporal, Inngest, or Restate.
+
+### Queue-Based Systems
+
+Queue-based systems are easier to deploy and sufficient for bounded background jobs [1]. A team can build a reliable agent runner with:
+
+- PostgreSQL for checkpoints and operation logs
+- Redis or SQS for job queuing
+- A worker pool that reads jobs, loads checkpoints, executes agent steps, and writes updated state
+- Cron or scheduled jobs to scan for paused workflows and resume them
+
+This architecture handles most single-agent tasks: document processing, data pipeline orchestration, scheduled analysis jobs. It avoids the operational complexity of a new distributed system.
+
+### Workflow Engines
+
+Proponents of Temporal-style workflows argue that long waits, replay, signals, approvals, and complex compensation logic justify a dedicated durable-execution engine [1][2]. Workflow engines provide:
+
+- **Deterministic replay:** Rerun workflow code against recorded history without re-executing external calls
+- **Durable timers:** Sleep for days or weeks without holding a worker
+- **Signal handling:** Receive external events (approvals, cancellations) mid-execution
+- **Child workflows:** Spawn sub-tasks with independent retry and timeout policies
+- **Compensation logic:** Define rollback steps for partially completed multi-step transactions
+
+The trade-off is infrastructure complexity. Workflow engines require additional services (workers, history stores, schedulers), impose determinism constraints on workflow code, and introduce new failure modes (history retention, version skew).
+
+| Feature | Queue + Checkpoint | Workflow Engine |
+|---------|-------------------|----------------|
+| Deployment complexity | Low | Medium-High |
+| Long waits (days) | Requires custom scheduler | Native durable timers |
+| External signals | Poll-based or webhook | Built-in signal handling |
+| Replay determinism | Manual operation logging | Automatic history replay |
+| Compensation/rollback | Application logic | Saga pattern support |
+| Learning curve | Familiar patterns | New programming model |
+
+For teams already running Temporal or similar systems, using them for agents is straightforward. For teams without existing workflow infrastructure, the queue-based approach ships faster and handles most production workloads.
+
+## State Management: Snapshots vs. Event Sourcing
+
+Snapshots provide faster recovery and simpler reads; event sourcing offers a detailed audit trail and fine-grained replay but increases history-management and determinism requirements [6].
+
+**Snapshot-based checkpointing** saves the complete agent state periodically:
+
+```python
+checkpoint = {
+    "position": {"step": 4, "item_index": 127},
+    "results": {"companies_processed": 8, "filings_fetched": 8},
+    "context": {"quarter": "Q4_2024", "sectors": ["tech"]},
+    "metadata": {"started_at": "...", "total_api_calls": 94}
+}
+db.save_checkpoint(job_id, checkpoint)
+```
+
+Recovery loads the latest snapshot and continues from that point. This is simple and fast but loses granular history between checkpoints.
+
+**Event sourcing** appends every agent action to an immutable log:
+
+```python
+events = [
+    {"type": "task_started", "ts": "..."},
+    {"type": "company_list_fetched", "count": 10, "ts": "..."},
+    {"type": "filing_fetched", "company": "AAPL", "ts": "..."},
+    {"type": "filing_fetched", "company": "MSFT", "ts": "..."},
+    # ... hundreds more events
+]
+```
+
+Recovery replays events to rebuild state. Event sourcing enables point-in-time debugging, exact audit trails, and reprocessing from arbitrary historical points. The cost is storage growth, replay latency, and strict determinism requirements (replay must produce identical results).
+
+A hybrid approach combines frequent lightweight snapshots with event logs between snapshots. Temporal uses this pattern: workflows replay recent history from the last snapshot, avoiding full replay of multi-day workflows.
+
+![Top view of business strategy charts and diagrams highlighting stages and steps.](https://images.pexels.com/photos/7947841/pexels-photo-7947841.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940)
+*Photo by [RDNE Stock project](https://www.pexels.com/@rdne) on [Pexels](https://www.pexels.com)*
+
+
+## Checkpoint Frequency and Overhead
+
+Checkpointing after every meaningful step minimizes lost work; frequent writes increase storage, latency, and contention, making batching or asynchronous checkpointing attractive under load [10].
+
+A document processing agent that checkpoints after every document parsed adds 50-200ms per document for database writes. Processing 10,000 documents incurs 500-2,000 seconds (8-33 minutes) of checkpoint overhead. Batching checkpoints—writing every 100 documents—reduces overhead to 5-20 seconds while accepting that a crash loses up to 100 documents of work.
+
+Strategies to reduce checkpoint overhead:
+
+- **Batch writes:** Checkpoint every N items or every M seconds
+- **Async persistence:** Write checkpoints to a buffer and flush asynchronously
+- **Incremental updates:** Use database upserts to update only changed fields
+- **Compression:** Store large intermediate results (embeddings, parsed documents) in object storage and checkpoint only the reference
+- **Local snapshots:** Write to local disk during execution, sync to durable storage periodically
+
+Reliability engineering is emphasizing failure-injection tests, checkpoint-lag monitoring, retention policies, stable run identifiers, and idempotency keys tied to workflow and step identity [10].
+
+## Long-Lived Workers vs. Terminate-and-Resume
+
+Persistent workers can reduce startup overhead and simplify streaming; heartbeat or scheduler-driven execution reduces resource usage and limits the impact of worker crashes during long waits [5].
+
+**Long-lived workers** maintain agent state in memory across multiple tasks or steps:
+
+- Lower latency between steps (no cold start)
+- Easier to implement streaming responses
+- Simple sequential execution model
+- But: ties up resources during waits, harder to scale dynamically, crashes lose in-memory state
+
+**Terminate-and-resume** workers checkpoint after each step and exit:
+
+- No resources consumed during long waits
+- Easier horizontal scaling (any worker can pick up any checkpointed job)
+- Crash-only design: termination and crash are identical, simplifying testing
+- But: higher per-step latency, more complex checkpoint/resume logic
+
+The choice depends on task characteristics. An agent that streams multi-minute LLM responses benefits from long-lived workers. An agent that waits hours for CI results or days for approvals should terminate and resume.
+
+## Practical Implementation Checklist
+
+Teams shipping reliable long-running agents should implement:
+
+**Queue layer:**
+- At-least-once delivery with visibility timeout
+- Retry count tracking in message payload
+- Dead-letter queue for exhausted retries
+- Message deduplication for exactly-once processing
+
+**Checkpoint layer:**
+- Task position and progress tracking
+- Intermediate result storage (database or object store)
+- Retry and error history
+- Idempotency keys for external operations
+- Stable workflow/run identifiers
+
+**Recovery layer:**
+- Reconciliation checks before replaying external calls
+- Bounded retry policies with exponential backoff
+- Human escalation paths for unrecoverable errors
+- Operation logs for debugging failed runs
+
+**Monitoring:**
+- Checkpoint lag (time since last successful checkpoint)
+- Retry distribution (how often jobs hit max retries)
+- Recovery success rate (checkpoints that resume successfully)
+- Resource consumption per checkpoint (storage, latency)
+
+**Testing:**
+- Failure injection (kill workers mid-task)
+- Checkpoint restoration tests (resume from arbitrary points)
+- Idempotency tests (run same step twice, verify single effect)
+- Retry budget tests (verify escalation after max retries)
+
+## Key Takeaways
+
+**Architect for failure from the start:** Design agent tasks as sequences of checkpointable steps rather than monolithic executions. Build reconciliation logic before the first production failure, not after.
+
+**Treat checkpoints as transaction boundaries:** Every external side effect—API calls, database writes, message sends—should either be idempotent or protected by a reconciliation check.
+
+**Set explicit retry budgets:** Infinite retries compound errors, waste resources, and create runaway costs. Define maximum retry counts and escalation paths during design, not during incidents.
+
+**Choose the right persistence granularity:** Checkpoint frequently enough to minimize lost work, but batch writes or use async persistence to avoid dominating execution time with storage overhead.
+
+**Test crash recovery as a first-class requirement:** Inject failures during integration tests, verify resumption from checkpoints, and validate that retries don't duplicate external effects.
+
+**Start simple, add workflow engines when necessary:** A queue plus database checkpoint handles most production workloads. Adopt workflow engines when you need multi-day waits, complex signals, or compensation logic, not as a default.
+
+## References
+
+1. Dubrov, Slava. (2026). *Long-Running AI Agent Runtime: Sessions and Checkpoints.* https://slavadubrov.com/blog/2026/05/26/ai-agent-runtime/
+
+2. Faj, Samuel. (2026). *Durable AI Agents: Checkpoints, Queues, or Workflows?* https://www.samuelfaj.com/en/blog/durable-execution-for-ai-agents-queue-or-workflow/
+
+3. Negi Adventures. (2026). *Retry and Recovery Patterns for Long-Running AI Agent Jobs.* https://negiadventures.github.io/blog/agent-retry-recovery.html
+
+4. AutoLearning Agents. (2026). *How AI Agents Handle Long-Running Tasks.* https://www.autolearningagents.com/how-ai-agents-work/how-agents-handle-long-tasks.php
+
+5. OpenLegion. (2026). *AI Agent Long Running Tasks:
