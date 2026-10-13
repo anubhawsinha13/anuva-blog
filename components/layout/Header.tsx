@@ -2,6 +2,7 @@ import Link from "next/link";
 import ThemeToggle from "./ThemeToggle";
 
 const NAV = [
+  { href: "/brewiq", label: "BrewIQ" },
   { href: "/profile", label: "Profile" },
   { href: "/blog", label: "Blog" },
   { href: "/brewiq", label: "BrewIQ" },
